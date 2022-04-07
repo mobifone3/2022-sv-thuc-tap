@@ -11,18 +11,14 @@ function TableRow({ ten, ho, email, stt, ...props }) {
   );
 }
 
-export default function TableBody() {
-  let data = [];
-
-  for (let i = 0; i < 100; i++) {
-    data.push({ ten: "Hieu" + i, ho: "Nguyen", email: "hieu.quang", stt: i + 1 });
-  }
-
+export default function TableBody({ svArr }) {
   return (
     <tbody>
-      {data.map((item, idx) => (
-        <TableRow key={idx} ten={item.ten} ho={item.ho} email={item.email} stt={item.stt}></TableRow>
-      ))}
+      {svArr
+        ? svArr.map((item, idx) => (
+            <TableRow key={idx} ten={item?.fullname} ho={item?.fullname} email={item?.email} stt={idx + 1}></TableRow>
+          ))
+        : null}
     </tbody>
   );
 }
