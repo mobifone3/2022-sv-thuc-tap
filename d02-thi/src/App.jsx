@@ -1,6 +1,7 @@
 import { useState } from "react";
-import TableHolder from "./views/TableHolder";
 import InputHolder from "./views/InputHolder";
+import TableHolder from "./views/TableHolder";
+import Header from "./views/Common/Header";
 
 function App() {
   const [formData, setFormData] = useState();
@@ -20,17 +21,25 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-3">
-          <InputHolder formData={formData} handleOnChange={handleOnChange} handleOnSaveSV={handleOnSaveSV}></InputHolder>
-        </div>
-        <div className="col-9">
-          <TableHolder svArr={svArr}></TableHolder>
+    <>
+      <Header></Header>
+      <div className="container mt-5">
+        <div className="row">
+          <div className="col-3">
+            <InputHolder
+              formData={formData}
+              handleOnChange={handleOnChange}
+              handleOnSaveSV={handleOnSaveSV}
+            ></InputHolder>
+          </div>
+          <div className="col-9">
+            <TableHolder svArr={svArr}></TableHolder>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
 export default App;
+
+//function table row

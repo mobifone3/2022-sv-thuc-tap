@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import Input from "./InputHolder/Input";
+import React from "react";
+import Button from "./Common/Button";
+import Input from "./Input/Input";
 
-export default function ({ formData, handleOnChange, handleOnSaveSV }) {
+export default function InputHolder({
+  formData,
+  handleOnChange,
+  handleOnSaveSV,
+}) {
   const formConfig = [
     { label: "Mã SV", name: "code", type: "text", placeholder: "Nhập code" },
-    { label: "Họ Tên", name: "fullname", type: "text", placeholder: "Nhập tên" },
+    {
+      label: "Họ Tên",
+      name: "fullname",
+      type: "text",
+      placeholder: "Nhập tên",
+    },
     { label: "Email", name: "email", type: "email", placeholder: "Nhập email" },
   ];
   return (
@@ -24,9 +34,11 @@ export default function ({ formData, handleOnChange, handleOnSaveSV }) {
         })}
       </div>
       <div className="col-12">
-        <button className="btn btn-success btn-block" onClick={handleOnSaveSV}>
-          Nhập SV
-        </button>
+        <Button
+          className={"btn-success form-control"}
+          value={"Thêm"}
+          onClick={handleOnSaveSV}
+        ></Button>
       </div>
     </div>
   );

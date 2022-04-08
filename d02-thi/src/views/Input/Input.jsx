@@ -9,7 +9,15 @@ import React from "react";
  * @props {string} value: value cho input (dùng trong controlled form)
  * @returns
  */
-export default function Input({ mb, name, label, type, placeholder, value, handleOnChange }) {
+export default function Input({
+  mb,
+  name,
+  label,
+  type,
+  placeholder,
+  value,
+  handleOnChange,
+}) {
   return (
     <div className={mb || "mb-2"}>
       {label ? <label className="form-label">{label}</label> : null}
