@@ -6,8 +6,6 @@ import TodoList from "./views/TodoList";
 
 import "./assets/style.css";
 
-import "./assets/style.css";
-
 function App() {
   // const [formData, setFormData] = useState();
   // const [svArr, setSvArr] = useState([]);
