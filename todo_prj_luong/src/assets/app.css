@@ -1,0 +1,65 @@
+.todo {
+  width: 600px;
+  margin: 0 auto;
+  display: block;
+  margin-top: 30px;
+  padding: 20px 0;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.todo_form {
+  margin: 10px 20px;
+  border: 2px solid #eee;
+  padding: 20px;
+}
+.todo_title {
+  text-align: center;
+}
+.todo_main {
+  margin: 0 20px;
+}
+.todo_action {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 20px 0;
+}
+.todo_action button {
+  width: 180px;
+  color: white;
+}
+.todo_list {
+  padding: 0;
+}
+.todo_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+.todo_name {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  margin: 0;
+}
+.todo_icon_pen {
+  color: orange;
+  margin: 0 15px;
+}
+.todo_icon_remove {
+  color: red;
+}
+.todo_bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.todo_bottom button {
+  width: 100%;
+}
+.todo_bottom button:first-child {
+  margin-right: 10px;
+}
