@@ -5,8 +5,11 @@ import TodoInput from "./views/TodoInput";
 import TodoList from "./views/TodoList";
 
 import "./assets/style.css";
+<<<<<<< HEAD
 
 import "./assets/style.css";
+=======
+>>>>>>> ac0f343 (thi commit UI todo)
 
 function App() {
   // const [formData, setFormData] = useState();
