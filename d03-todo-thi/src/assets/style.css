@@ -19,7 +19,7 @@ input {
   /* padding: 10px; */
   border-radius: 5px;
   font-size: 16px;
-  width: 93.33%;
+  width: 93%;
   /* margin-bottom: 15px; */
 }
 span {
@@ -52,17 +52,19 @@ ul li {
   font-size: 18px;
 }
 i {
-  margin: 0 7px;
+  margin: 5px;
 }
-
+.check-form > i {
+  margin-right: 15px;
+}
+.fa-square {
+  color: rgb(132, 125, 125);
+}
 .fa-pen {
   color: rgb(205, 205, 26);
 }
 .fa-trash {
   color: red;
-}
-.span1 {
-  background: #2b79a7;
 }
 /* Set all odd list items to a different color (zebra-stripes) */
 
@@ -109,10 +111,4 @@ ul li:hover {
 }
 .addBtn:hover {
   background-color: #bbb;
-}
-.todo-name {
-  line-height: 1;
-}
-.form-check-input {
-  margin-right: 10px;
 }

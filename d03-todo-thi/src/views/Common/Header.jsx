@@ -6,9 +6,13 @@ export default function Header() {
       <a className="navbar-brand ps-3" href="index.html">
         MOBIFONE ZONE 3
       </a>
-      <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+      {/* <button
+        className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
         <i className="fas fa-bars"></i>
-      </button>
+      </button> */}
       <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div className="input-group">
           <input
@@ -23,7 +27,7 @@ export default function Header() {
           </button>
         </div>
       </form>
-      <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+      {/* <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"
@@ -56,7 +60,7 @@ export default function Header() {
             </li>
           </ul>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 }
