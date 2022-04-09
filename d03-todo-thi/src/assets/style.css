@@ -19,7 +19,7 @@ input {
   /* padding: 10px; */
   border-radius: 5px;
   font-size: 16px;
-  width: 93%;
+  width: 93.33%;
   /* margin-bottom: 15px; */
 }
 span {
@@ -52,14 +52,9 @@ ul li {
   font-size: 18px;
 }
 i {
-  margin: 5px;
+  margin: 0 7px;
 }
-.check-form > i {
-  margin-right: 15px;
-}
-.fa-square {
-  color: rgb(132, 125, 125);
-}
+
 .fa-pen {
   color: rgb(205, 205, 26);
 }
