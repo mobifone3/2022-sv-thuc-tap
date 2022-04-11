@@ -1,0 +1,54 @@
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+
+h6 {
+  text-align: center;
+}
+img {
+  border-radius: 10px;
+}
+p {
+  margin: 0;
+}
+.input-group {
+  width: 50%;
+  margin-left: 25%;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.card1 {
+  left: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(135, 17, 17);
+  color: white;
+  padding: 0 20px;
+  border: none;
+}
+.card2 {
+  background-color: rgb(135, 17, 17);
+}
+.btn1 {
+  background-color: rgb(13, 152, 13);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  border-radius: 7px;
+  padding: 0 16px;
+}
+.btn2 {
+  color: white;
+  font-size: 14px;
+}
+.rating {
+  display: flex;
+}
+.btnrating {
+  margin-left: 30px;
+}

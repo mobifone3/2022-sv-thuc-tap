@@ -8,7 +8,6 @@ function App() {
   const [svArr, setSvArr] = useState([]);
 
   const handleOnChange = (e) => {
-    console.log(`DEBUG ------>`, formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
