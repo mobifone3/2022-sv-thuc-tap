@@ -8,7 +8,6 @@ export default function App() {
   const [value, setValue] = useState();
   const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState([]);
-  const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState([]);
 
   // ---------------------------------------------------------------------------------
@@ -25,30 +24,6 @@ export default function App() {
   useEffect(() => {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
   }, []);
-  useEffect(() => {
-    if (mode) {
-      let filterList = [];
-      switch (mode) {
-        case "ALL":
-          setFilterList(listData);
-          break;
-
-        case "DONE":
-          filterList = listData?.filter((todo) => todo.isCheck);
-          setFilterList(filterList);
-          console.log(filterList);
-          break;
-
-        case "TODO":
-          filterList = listData?.filter((todo) => !todo.isCheck);
-          setFilterList(filterList);
-          break;
-
-        default:
-          break;
-      }
-    }
-  }, [listData, mode]);
 
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION
@@ -58,18 +33,7 @@ export default function App() {
   };
 
   const handleOnChangeEdit = (e) => {
-    setInputEdit({ name: e.target.value, isCheck: true, isEdit: true });
-  };
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      let newList = [...listData];
-      let foundIdx = newList.findIndex((item) => item.isEdit);
-      newList.splice(foundIdx, 1, inputEdit);
-      newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
-      newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
-      setListData(newList);
-      setFilterList(newList);
-    }
+    setInputEdit({ name: e.target.value });
   };
 
   // ---------------------------------------------------------------------------------
@@ -104,6 +68,7 @@ export default function App() {
   const handleSwitchEdit = (uuid, name) => {
     let newList = [...listData];
     let foundIdx = newList.findIndex((item) => item.uuid === uuid);
+    console.log(name);
     newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
     newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
 
@@ -113,7 +78,26 @@ export default function App() {
 
   // ---------------------------------------------------------------------------------
   const handleChangeFilterMode = (mode) => {
-    setMode(mode);
+    let filterList = [];
+    switch (mode) {
+      case "ALL":
+        setFilterList(listData);
+        break;
+
+      case "DONE":
+        filterList = listData?.filter((todo) => todo.isCheck);
+        setFilterList(filterList);
+        console.log(filterList);
+        break;
+
+      case "TODO":
+        filterList = listData?.filter((todo) => !todo.isCheck);
+        setFilterList(filterList);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleDeleteDone = () => {
@@ -145,15 +129,7 @@ export default function App() {
             <Button handleOnClick={() => handleChangeFilterMode("DONE")} value={"Done"} className={"btn-info"}></Button>
             <Button handleOnClick={() => handleChangeFilterMode("TODO")} value={"Todo"} className={"btn-info"}></Button>
           </div>
-          <TodoList
-            todoLists={listData}
-            filterList={filterList}
-            handleSwitchEdit={handleSwitchEdit}
-            handleCheckBoxClick={handleCheckBoxClick}
-            handleDeleteTodoById={handleDeleteTodoById}
-            handleOnChangeEdit={handleOnChangeEdit}
-            handleKeyPress={handleKeyPress}
-          ></TodoList>
+          <TodoList todoLists={listData} filterList={filterList} handleSwitchEdit={handleSwitchEdit} handleCheckBoxClick={handleCheckBoxClick} handleDeleteTodoById={handleDeleteTodoById} handleOnChangeEdit={handleOnChangeEdit}></TodoList>
           <div className="todo_bottom">
             <Button handleOnClick={handleDeleteDone} value={"Delete Done Tasks"} className={"btn-danger"}></Button>
             <Button handleOnClick={handleDeleteAll} value={"Delete All Tasks"} className={"btn-danger"}></Button>

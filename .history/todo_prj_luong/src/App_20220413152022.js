@@ -8,7 +8,6 @@ export default function App() {
   const [value, setValue] = useState();
   const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState([]);
-  const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState([]);
 
   // ---------------------------------------------------------------------------------
@@ -25,30 +24,6 @@ export default function App() {
   useEffect(() => {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
   }, []);
-  useEffect(() => {
-    if (mode) {
-      let filterList = [];
-      switch (mode) {
-        case "ALL":
-          setFilterList(listData);
-          break;
-
-        case "DONE":
-          filterList = listData?.filter((todo) => todo.isCheck);
-          setFilterList(filterList);
-          console.log(filterList);
-          break;
-
-        case "TODO":
-          filterList = listData?.filter((todo) => !todo.isCheck);
-          setFilterList(filterList);
-          break;
-
-        default:
-          break;
-      }
-    }
-  }, [listData, mode]);
 
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION
@@ -58,7 +33,7 @@ export default function App() {
   };
 
   const handleOnChangeEdit = (e) => {
-    setInputEdit({ name: e.target.value, isCheck: true, isEdit: true });
+    setInputEdit({ name: e.target.value, isCheck: false, isEdit: false });
   };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -113,7 +88,26 @@ export default function App() {
 
   // ---------------------------------------------------------------------------------
   const handleChangeFilterMode = (mode) => {
-    setMode(mode);
+    let filterList = [];
+    switch (mode) {
+      case "ALL":
+        setFilterList(listData);
+        break;
+
+      case "DONE":
+        filterList = listData?.filter((todo) => todo.isCheck);
+        setFilterList(filterList);
+        console.log(filterList);
+        break;
+
+      case "TODO":
+        filterList = listData?.filter((todo) => !todo.isCheck);
+        setFilterList(filterList);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleDeleteDone = () => {

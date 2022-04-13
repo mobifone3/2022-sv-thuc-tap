@@ -8,7 +8,6 @@ export default function App() {
   const [value, setValue] = useState();
   const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState([]);
-  const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState([]);
 
   // ---------------------------------------------------------------------------------
@@ -25,10 +24,10 @@ export default function App() {
   useEffect(() => {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
   }, []);
-  useEffect(() => {
-    if (mode) {
+  useEffect(
+    (handleChangeFilterMode) => {
       let filterList = [];
-      switch (mode) {
+      switch (handleChangeFilterMode) {
         case "ALL":
           setFilterList(listData);
           break;
@@ -47,8 +46,9 @@ export default function App() {
         default:
           break;
       }
-    }
-  }, [listData, mode]);
+    },
+    [handleChangeFilterMode]
+  );
 
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION
@@ -113,7 +113,7 @@ export default function App() {
 
   // ---------------------------------------------------------------------------------
   const handleChangeFilterMode = (mode) => {
-    setMode(mode);
+    return mode;
   };
 
   const handleDeleteDone = () => {
