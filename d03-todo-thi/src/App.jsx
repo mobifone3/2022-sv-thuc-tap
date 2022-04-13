@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import AddTask from "./views/Add Task/AddTask";
+
 import Header from "./views/Common/Header";
+import TodoInput from "./views/TodoInput";
+import TodoList from "./views/TodoList";
+
+import "./assets/style.css";
 
 function App() {
   // const [formData, setFormData] = useState();
@@ -22,13 +26,12 @@ function App() {
   return (
     <>
       <Header></Header>
-      <div className="container mt-3">
-        <h1>TodoInput</h1>
-        <AddTask></AddTask>
+
+      <div className="container mt-5 ">
+        <TodoInput></TodoInput>
+        <TodoList></TodoList>
       </div>
     </>
   );
 }
 export default App;
-
-//function table row
