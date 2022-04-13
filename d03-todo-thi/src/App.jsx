@@ -12,6 +12,8 @@ function App() {
   const [value, setValue] = useState(); //luu du lieu nhap tu input
   const [listData, setListData] = useState([]);
   const [filterList, setFilterList] = useState([]);
+  const [inputEdit, setInputEdit] = useState();
+  const [mode, setMode] = useState();
 
   //----------------------------------------------------------------
   //I. SIDE EFFECT HANDLE
@@ -27,7 +29,26 @@ function App() {
   //2. Gọi API lấy dữ liêu ban đầu cho component này
   useEffect(() => {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
-  }, []);
+    if (mode) {
+      let filterList = [];
+      switch (mode) {
+        case "ALL":
+          setFilterList(listData);
+          break;
+        case "DONE":
+          filterList = listData.filter((todo) => todo.isCheck);
+          setFilterList(filterList);
+          // console.log(filterList);
+          break;
+        case "TODO":
+          filterList = listData.filter((todo) => !todo.isCheck);
+          setFilterList(filterList);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [listData, mode]);
 
   //----------------------------------------------------------------
   //II.HELPER FUNCTION SECTION
@@ -35,6 +56,22 @@ function App() {
 
   const handleOnChange = (e) => {
     setValue({ ...value, name: e.target.value, isCheck: false, isEdit: false });
+  };
+
+  const handleOnChangeEdit = (e) => {
+    setInputEdit({ name: e.target.value, isCheck: true, isEdit: true });
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      let newList = [...listData];
+      let foundIdx = newList.findIndex((item) => item.isEdit);
+      newList.splice(foundIdx, 1, inputEdit);
+      newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+      newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+      setListData(newList);
+      setFilterList(newList);
+    }
   };
   //----------------------------------------------------------------
 
@@ -69,28 +106,13 @@ function App() {
     let newList = [...listData];
     let foundIdx = newList.findIndex((item) => item.uuid === uuid);
     newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+    newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
     setListData(newList);
     setFilterList(newList);
   };
   //----------------------------------------------------------------
   const handleChangeFilterMode = (mode) => {
-    let filterList = [];
-    switch (mode) {
-      case "ALL":
-        setFilterList(listData);
-        break;
-      case "DONE":
-        filterList = listData.filter((todo) => todo.isCheck);
-        setFilterList(filterList);
-        // console.log(filterList);
-        break;
-      case "TODO":
-        filterList = listData.filter((todo) => !todo.isCheck);
-        setFilterList(filterList);
-        break;
-      default:
-        break;
-    }
+    setMode(mode);
   };
 
   const handleDeleteDone = () => {
@@ -124,6 +146,8 @@ function App() {
           handleCheckBoxClick={handleCheckBoxClick}
           handleDeleteTodoById={handleDeleteTodoById}
           handleSwitchEdit={handleSwitchEdit}
+          handleOnChangeEdit={handleOnChangeEdit}
+          handleKeyPress={handleKeyPress}
         ></TodoList>
 
         <div className=" btnDelete ">

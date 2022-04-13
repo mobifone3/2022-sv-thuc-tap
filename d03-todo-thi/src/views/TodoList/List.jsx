@@ -8,13 +8,20 @@ export default function List({
   handleCheckBoxClick,
   handleSwitchEdit,
   handleDeleteTodoById,
+  handleOnChangeEdit,
+  handleKeyPress,
 }) {
   return (
     <>
       <li className="row mb-2">
         <div className="col-8">
           {isEdit ? (
-            <input type="text" className="form-control" value={name}></input>
+            <input
+              type="text"
+              className="form-control"
+              onChange={handleOnChangeEdit}
+              onKeyPress={handleKeyPress}
+            ></input>
           ) : (
             <p className="todo-name m-0">{name}</p>
           )}
