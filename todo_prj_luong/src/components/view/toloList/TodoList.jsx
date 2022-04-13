@@ -1,13 +1,23 @@
 import React from "react";
 import TodoItem from "./TodoItem";
 
-export default function TodoList({ todoLists, isCheck, handleCheckBox }) {
+export default function TodoList({ filterList, todoLists, handleCheckBoxClick, handleDeleteTodoById, handleSwitchEdit }) {
   return (
     <>
-      {todoLists ? (
+      {filterList?.[0] ? (
         <ul className="todo_list">
-          {todoLists.map((item, idx) => (
-            <TodoItem key={idx} name={item?.name} idx={idx + 1} isCheck={isCheck} handleCheckBox={handleCheckBox}></TodoItem>
+          {filterList.map((item, idx) => (
+            <TodoItem
+              key={idx}
+              name={item?.name}
+              tt={idx + 1}
+              uuid={item?.uuid}
+              isCheck={item?.isCheck}
+              isEdit={item?.isEdit}
+              handleSwitchEdit={handleSwitchEdit}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleDeleteTodoById={handleDeleteTodoById}
+            ></TodoItem>
           ))}
         </ul>
       ) : null}

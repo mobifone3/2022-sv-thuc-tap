@@ -29,8 +29,10 @@
 }
 .todo_list {
   padding: 0;
+  width: 100%;
 }
 .todo_item {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
