@@ -1,18 +1,28 @@
 import React from "react";
 
-export default function input(id, type, value, placeholder, handleOnChange) {
+export default function input({
+  id,
+  label,
+  className,
+  type,
+  value,
+  placeholder,
+  handleOnChange,
+}) {
   return (
     <>
       <div className="input-group">
-        <span>
-          <i className="fa-solid fa-file-lines"></i>
+        <span className="input-group-text span1 " id="basic-addon1">
+          {label}
         </span>
         <input
           type={type || "text"}
-          id={id || "myInput"}
-          value={value}
-          placeholder={placeholder || "New Todo"}
+          className={`form-control ${className}`}
+          placeholder={placeholder}
+          value={value.name || ""}
           onChange={handleOnChange}
+          aria-label="Username"
+          aria-describedby="basic-addon1"
         />
       </div>
     </>
