@@ -5,11 +5,6 @@ import TodoInput from "./views/TodoInput";
 import TodoList from "./views/TodoList";
 
 import "./assets/style.css";
-<<<<<<< HEAD
-
-import "./assets/style.css";
-=======
->>>>>>> ac0f343 (thi commit UI todo)
 
 function App() {
   // const [formData, setFormData] = useState();
@@ -28,12 +23,25 @@ function App() {
   //   setFormData({});
   // };
 
+  const [value, setValue] = useState();
+  let [listData, setListData] = useState([]);
+
+  const handleOnChange = (e) => {
+    setValue = { ...value, name: e.target.value, isCheck: false };
+  };
+
+  const handleOnClickAdd = () => {
+    let newData = [...listData];
+    newData.push(value);
+    setListData(newData);
+    setValue("");
+  };
+
   return (
     <>
       <Header></Header>
-
       <div className="container mt-5 ">
-        <TodoInput></TodoInput>
+        <TodoInput handleOnChange={handleOnChange} handleOnClick={handleOnClickAdd} value={value}></TodoInput>
         <TodoList></TodoList>
       </div>
     </>
