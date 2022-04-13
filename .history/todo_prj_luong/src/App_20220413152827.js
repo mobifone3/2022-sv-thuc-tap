@@ -26,29 +26,27 @@ export default function App() {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
   }, []);
   useEffect(() => {
-    if (mode) {
-      let filterList = [];
-      switch (mode) {
-        case "ALL":
-          setFilterList(listData);
-          break;
+    let filterList = [];
+    switch (mode) {
+      case "ALL":
+        setFilterList(listData);
+        break;
 
-        case "DONE":
-          filterList = listData?.filter((todo) => todo.isCheck);
-          setFilterList(filterList);
-          console.log(filterList);
-          break;
+      case "DONE":
+        filterList = listData?.filter((todo) => todo.isCheck);
+        setFilterList(filterList);
+        console.log(filterList);
+        break;
 
-        case "TODO":
-          filterList = listData?.filter((todo) => !todo.isCheck);
-          setFilterList(filterList);
-          break;
+      case "TODO":
+        filterList = listData?.filter((todo) => !todo.isCheck);
+        setFilterList(filterList);
+        break;
 
-        default:
-          break;
-      }
+      default:
+        break;
     }
-  }, [listData, mode]);
+  }, [mode]);
 
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION

@@ -48,7 +48,7 @@ export default function App() {
           break;
       }
     }
-  }, [listData, mode]);
+  }, [mode]);
 
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION
