@@ -1,0 +1,19 @@
+.header {
+}
+.header_main {
+  display: flex;
+  justify-content: space-between;
+}
+.header .header_logo,
+.header .nav_link {
+  display: block !important;
+  color: red;
+  text-decoration: none;
+}
+.header .nav_menu {
+  display: flex;
+}
+.header .nav_item {
+  list-style-type: none;
+  margin-left: 30px;
+}

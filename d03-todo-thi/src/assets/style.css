@@ -1,0 +1,109 @@
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+.container {
+  padding: 0 15% 0 15%;
+}
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(199, 196, 196);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+/* Style the input */
+input {
+  border: 1px solid rgb(199, 196, 196);
+  /* padding: 10px; */
+  border-radius: 5px;
+  font-size: 16px;
+  width: 93.33%;
+  /* margin-bottom: 15px; */
+}
+span {
+  background-color: #2b79a7;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+
+.fa-file-lines {
+  color: #fff;
+}
+/* Remove margins and padding from the list */
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Style the list items */
+ul li {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 12px 8px 12px 40px;
+  border: solid 1px rgb(199, 196, 196);
+  margin-top: 15px;
+  border-radius: 5px;
+
+  /* background: #eee; */
+  font-size: 18px;
+}
+i {
+  margin: 0 7px;
+}
+
+.fa-pen {
+  color: rgb(205, 205, 26);
+}
+.fa-trash {
+  color: red;
+}
+/* Set all odd list items to a different color (zebra-stripes) */
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  padding: 10px;
+  margin-top: 10px;
+  width: auto;
+  background: #2b79a7;
+  color: rgb(255, 255, 255);
+  /* float: left; */
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  /* transition: 0.3s; */
+  border-radius: 5px;
+  border: solid 1px;
+}
+.btnTodoList {
+  display: flex;
+  justify-content: space-between;
+}
+.btnList {
+  width: 31.81%;
+}
+.btnDel {
+  background: #c20d0d;
+  width: 48%;
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+.btnDelete {
+  display: flex;
+  flex-direction: column;
+}
+.btnDelete > div {
+  display: flex;
+  justify-content: space-between;
+}
+.addBtn:hover {
+  background-color: #bbb;
+}

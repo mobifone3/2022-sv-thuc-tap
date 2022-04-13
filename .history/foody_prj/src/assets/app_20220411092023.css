@@ -1,0 +1,24 @@
+.header {
+  padding: 10px 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.header_main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .header_logo,
+.header .nav_link {
+  display: block !important;
+  color: red;
+  text-decoration: none;
+}
+.header .nav_menu {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.header .nav_item {
+  list-style-type: none;
+  margin-left: 30px;
+}

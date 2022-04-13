@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;@700&display=swap");
+body {
+  font-family: "Dancing Script", cursive;
+  font-size: 16px;
+}
+.header {
+  padding: 10px 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin-bottom: 30px;
+}
+.header_main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .header_logo,
+.header .nav_link {
+  display: block !important;
+  text-decoration: none;
+}
+.header_logo {
+  font-style: italic;
+  color: #d80e10;
+}
+.header .nav_menu {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.header .nav_item {
+  list-style-type: none;
+  margin-left: 30px;
+}
+.foody_main {
+  margin-top: 50px;
+  display: flex;
+}
+.foody_main_raiting,
+.foody_main_Payments,
+.foody_main_price {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.input {
+  display: flex;
+  justify-content: center;
+}
+.input input {
+  width: 60%;
+}
+.foody_main_title {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.foody_list {
+  display: block;
+}
+.foody_item {
+  display: flex;
+}
+.foody_item img {
+  width: 300px;
+}

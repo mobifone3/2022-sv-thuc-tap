@@ -1,0 +1,11 @@
+.header {
+}
+.header .header_logo {
+  display: block;
+}
+.header_main {
+  display: flex;
+}
+.header .nav_link {
+  display: block;
+}

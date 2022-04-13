@@ -1,0 +1,11 @@
+.header {
+}
+.header .header_logo {
+  display: block;
+}
+
+.header .nav_link {
+  display: block;
+  list-style-type: none;
+  color: red;
+}

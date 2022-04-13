@@ -1,0 +1,9 @@
+.header {
+}
+.header .header_logo,
+.header .nav_link {
+  display: block;
+  list-style-type: none;
+  color: red;
+  text-decoration: none;
+}
