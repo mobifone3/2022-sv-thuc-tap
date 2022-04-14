@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { uuidv4 } from "./utils/uuidv4";
 import Button from "./components/common/Button";
 import TodoBox from "./components/view/todoInput/TodoBox";
 import TodoList from "./components/view/toloList/TodoList";
+import { baseURL } from "./apis";
 
 export default function App() {
   const [value, setValue] = useState();
+  const [mode, setMode] = useState();
   const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState([]);
-  const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState([]);
 
   // ---------------------------------------------------------------------------------
@@ -16,15 +18,21 @@ export default function App() {
   // ---------------------------------------------------------------------------------
   // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
   useEffect(() => {
-    if (listData?.[0]) {
-      // console.log("DEBUG IN USE EFFECT --> :", listData);
+    console.log(inputEdit);
+  }, [inputEdit]);
+
+  useEffect(() => {
+    if (!listData?.[0]) {
+      axios.get(baseURL + "/todos").then((res) => {
+        if (res?.status === 200 && res?.data) {
+          setListData(res.data instanceof Array ? res.data : [res.data]);
+          setFilterList(res.data instanceof Array ? res.data : [res.data]);
+        }
+      });
     }
   }, [listData]);
 
-  // 2. Gọi API lấy dữ liệu ban đầu cho component này
-  useEffect(() => {
-    // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
-  }, []);
+  // ---------------------------------------------------------------------------------
   useEffect(() => {
     if (mode) {
       let filterList = [];
@@ -57,8 +65,11 @@ export default function App() {
     setValue({ ...value, name: e.target.value, isCheck: false, isEdit: false });
   };
 
-  const handleOnChangeEdit = (e) => {
-    setInputEdit({ name: e.target.value, isCheck: true, isEdit: true });
+  const handleOnChangeEdit = (e, todo) => {
+    let newList = [...filterList];
+    let foundIdx = newList.findIndex((item) => item.id === todo.id);
+    newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
+    setFilterList(newList);
   };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -79,33 +90,41 @@ export default function App() {
       return;
     }
     let newData = [...listData];
-    newData.push({ ...value, uuid: uuidv4() });
+    newData.push({ ...value, id: uuidv4() });
     setListData(newData);
     setFilterList(newData);
     setValue("");
   };
 
-  const handleDeleteTodoById = (uuid) => {
+  const handleDeleteTodoById = (id) => {
     let newList = [...listData];
-    let foundIdx = newList.findIndex((item) => item.uuid === uuid);
+    let foundIdx = newList.findIndex((item) => item.id === id);
     newList.splice(foundIdx, 1);
     setListData(newList);
     setFilterList(newList);
   };
 
-  const handleCheckBoxClick = (uuid) => {
+  const handleCheckBoxClick = (id) => {
     let newList = [...listData];
-    let foundIdx = newList.findIndex((item) => item.uuid === uuid);
+    let foundIdx = newList.findIndex((item) => item.id === id);
     newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
     setListData(newList);
     setFilterList(newList);
   };
 
-  const handleSwitchEdit = (uuid, name) => {
+  const handleSwitchEdit = async (id, name, todo) => {
     let newList = [...listData];
-    let foundIdx = newList.findIndex((item) => item.uuid === uuid);
+    let foundIdx = newList.findIndex((item) => item.id === id);
+
+    if (newList[foundIdx].isEdit) {
+      console.log("DEBUG TODO EDIT -->", todo);
+      let res = await axios.put(baseURL + `/todos/${id}`, { ...todo, isEdit: false });
+      newList[foundIdx] = res.data;
+      setFilterList(newList);
+      return;
+    }
     newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
-    newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+    // newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
 
     setListData(newList);
     setFilterList(newList);

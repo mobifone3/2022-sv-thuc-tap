@@ -1,7 +1,14 @@
 import React from "react";
 import TodoItem from "./TodoItem";
 
-export default function TodoList({ filterList, handleOnChangeEdit, handleCheckBoxClick, handleDeleteTodoById, handleSwitchEdit, handleKeyPress }) {
+export default function TodoList({
+  filterList,
+  handleOnChangeEdit,
+  handleCheckBoxClick,
+  handleDeleteTodoById,
+  handleSwitchEdit,
+  handleKeyPress,
+}) {
   return (
     <>
       {filterList?.[0] ? (
@@ -11,7 +18,7 @@ export default function TodoList({ filterList, handleOnChangeEdit, handleCheckBo
               key={idx}
               name={item?.name}
               tt={idx + 1}
-              uuid={item?.uuid}
+              id={item?.id}
               isCheck={item?.isCheck}
               isEdit={item?.isEdit}
               handleSwitchEdit={handleSwitchEdit}
