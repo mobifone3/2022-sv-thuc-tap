@@ -61,6 +61,9 @@ i {
 .fa-trash {
   color: red;
 }
+.span1 {
+  background: #2b79a7;
+}
 /* Set all odd list items to a different color (zebra-stripes) */
 
 /* Darker background-color on hover */
@@ -106,4 +109,10 @@ ul li:hover {
 }
 .addBtn:hover {
   background-color: #bbb;
+}
+.todo-name {
+  line-height: 1;
+}
+.form-check-input {
+  margin-right: 10px;
 }

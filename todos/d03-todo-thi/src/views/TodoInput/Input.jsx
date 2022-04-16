@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function input(id, type, value, placeholder, handleOnChange) {
+export default function Input({
+  className,
+  type,
+  value,
+  placeholder,
+  handleOnChange,
+}) {
   return (
     <>
       <div className="input-group">
@@ -9,9 +15,9 @@ export default function input(id, type, value, placeholder, handleOnChange) {
         </span>
         <input
           type={type || "text"}
-          id={id || "myInput"}
-          value={value}
-          placeholder={placeholder || "New Todo"}
+          className={`form-control ${className}`}
+          placeholder={placeholder}
+          value={value.name || ""}
           onChange={handleOnChange}
         />
       </div>

@@ -1,26 +1,34 @@
 import React from "react";
 
-import Button from "./Common/Button";
-import List from "./TodoList/List";
+import ListItem from "./TodoList/ListItem";
 
-export default function TodoList() {
+export default function TodoList({
+  filterList,
+  handleDeleteTodoById,
+  handleCheckBoxClick,
+  handleSwitchEdit,
+  handleOnChangeEdit,
+}) {
   return (
     <>
-      <h2 className="text-center mt-3 ">TodoList</h2>
-      <div className="btnTodoList mt-3 mb-5">
-        <Button className="btnList" value={"All"}></Button>
-        <Button className="btnList" value={"Done"}></Button>
-        <Button className="btnList" value={"Todo"}></Button>
-      </div>
-
-      <List name="Learn Reacjs Basic"></List>
-
-      <div className=" btnDelete ">
-        <div>
-          <Button className="btnDel" value="Delete done tasks"></Button>
-          <Button className="btnDel" value=" Delete all tasks"></Button>
-        </div>
-      </div>
+      {filterList?.[0] ? (
+        <ul id="myUL">
+          {filterList.map((item, idx) => (
+            <ListItem
+              key={idx}
+              tt={idx + 1}
+              name={item?.name}
+              id={item?.id}
+              isDone={item?.isDone}
+              isEdit={item?.isEdit}
+              handleDeleteTodoById={handleDeleteTodoById}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleSwitchEdit={handleSwitchEdit}
+              handleOnChangeEdit={handleOnChangeEdit}
+            ></ListItem>
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 }
