@@ -106,6 +106,7 @@ export default function App() {
     let foundIdx = newList.findIndex((item) => item.uuid === uuid);
     newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
     newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+
     setListData(newList);
     setFilterList(newList);
   };
