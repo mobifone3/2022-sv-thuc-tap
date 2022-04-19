@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { uuidv4 } from "./utils/uuidv4";
+import axios from "axios";
 
 import TodoInput from "./views/TodoInput";
 import TodoList from "./views/TodoList";
 import Button from "./Common/Button";
+import { baseURL } from "./apis";
 
 import "./assets/style.css";
 
@@ -14,7 +16,21 @@ function App() {
   const [filterList, setFilerList] = useState([]);
 
   //----------------------------------------------------------------
-  //HELPER FUNCTION SECTION
+  //I. SIDE EFFECT HANDLE
+  //----------------------------------------------------------------
+  //1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc[] và thực hiện hàm trong cặp ()=>{}
+  useEffect(() => {
+    if (!listData?.[0]) {
+      axios.get(baseURL + "/todos").then((res) => {
+        if (res?.status === 200 && res?.data) {
+          setListData(res.data instanceof Array ? res.data : [res.data]);
+          setFilerList(res.data instanceof Array ? res.data : [res.data]);
+        }
+      });
+    }
+  }, [listData]);
+  //----------------------------------------------------------------
+  //II. HELPER FUNCTION SECTION
   //----------------------------------------------------------------
   const handleOnChange = (e) => {
     setValue({ ...value, name: e.target.value, isDone: false, isEdit: false });
@@ -42,9 +58,10 @@ function App() {
     setValue("");
   };
 
-  const handleDeleteTodoById = (id) => {
+  const handleDeleteTodoById = async (id) => {
     let newList = [...listData];
     let foundIdx = newList.findIndex((item) => item.id === id);
+
     newList.splice(foundIdx, 1);
     setListData(newList);
     setFilerList(newList);
@@ -58,11 +75,21 @@ function App() {
     setFilerList(newList);
   };
 
-  const handleSwitchEdit = (id) => {
+  const handleSwitchEdit = async (id, todo) => {
     let newList = [...listData];
     let foundIdx = newList.findIndex((item) => item.id === id);
+
+    if (newList[foundIdx].isEdit) {
+      let res = await axios.put(baseURL + `/todos/${id}`, {
+        ...todo,
+        isEdit: false,
+      });
+      newList[foundIdx] = res.data;
+      setFilerList(newList);
+      return;
+    }
+
     newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
-    newList[foundIdx].isDone = !newList[foundIdx].isDone;
     setListData(newList);
     setFilerList(newList);
   };
@@ -98,7 +125,7 @@ function App() {
     setFilerList([]);
   };
   //----------------------------------------------------------------
-  //JSX RETURN SECTION
+  //III. JSX RETURN SECTION
   //----------------------------------------------------------------
   return (
     <>
