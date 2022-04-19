@@ -9,41 +9,29 @@ import { baseUrl } from "./apis";
 export default function App() {
   const [value, setValue] = useState();
   const [inputEdit, setInputEdit] = useState();
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState();
   const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState(() => []);
 
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
-  // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
-  console.log(listData);
-  // useEffect(() => {
-  //   if (!listData?.[0]) {
-  //     axios.get(baseUrl + "todos").then((res) => {
-  //       if (res.data || res.code === 200) {
-  //         setListData(res.data instanceof Array ? res.data : [res.data]);
-  //         setFilterList(res.data instanceof Array ? res.data : [res.data]);
-  //       }
-  //     });
-  //   }
-  // }, [listData]);
-
   useEffect(() => {
-    (async () => {
+    if (!listData) {
       axios.get(baseUrl + "todos").then((res) => {
         if (res.data || res.code === 200) {
           setListData(res.data instanceof Array ? res.data : [res.data]);
           setFilterList(res.data instanceof Array ? res.data : [res.data]);
         }
       });
-    })();
+    }
   }, [listData]);
-  console.log(listData);
+
   // 2. Gọi API lấy dữ liệu ban đầu cho component này
   useEffect(() => {
     // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
   }, []);
+
   useEffect(() => {
     if (mode) {
       let filterList = [];
@@ -84,6 +72,7 @@ export default function App() {
     setFilterList(newList);
     console.log(filterList[foundIdx]);
   };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       let newList = [...listData];
@@ -103,8 +92,22 @@ export default function App() {
       return;
     }
     let newData = [...listData];
+
     newData.push({ ...value });
-    axios.post(baseUrl + "/todos", value);
+
+    axios
+      .post(baseUrl + "/todos", value)
+      .then((res) => {
+        console.log(res);
+        axios.get(baseUrl + "/todos").then((res) => {
+          console.log(res);
+          setListData(res.data);
+          setFilterList(res.data);
+        });
+      })
+      .catch((err) => {
+        alert(err.toString());
+      });
 
     setValue("");
   };
@@ -143,7 +146,40 @@ export default function App() {
     // setFilterList(newList);
   };
 
-  const handleDeleteAll = async () => {};
+  // const returnPromiseForEach = (listData) => {
+  //   return new Promise(async (res, rej) => {
+  //     let resultArr = [];
+  //     for (const todo of listData) {
+  //       let result = await axios.delete(baseUrl + `/todos/${todo.id}`);
+  //       resultArr.push(result);
+  //     }
+  //     res(resultArr);
+  //   });
+  // };
+
+  const handleDeleteAll = () => {
+    // returnPromiseForEach(listData).then((res) => {
+    //   console.log("TEST DEBUG ->>", res);
+    // });
+
+    // let newPromises = listData.filter((todo) => {
+    //   if (todo.isCheck) {
+    //     return axios.delete(baseUrl + `/todos/${todo.id}`);
+    //   }
+    // });
+
+    let newPromises = listData.map((todo) => {
+      return axios.delete(baseUrl + `/todos/${todo.id}`);
+    });
+
+    Promise.all(newPromises)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // ---------------------------------------------------------------------------------
   // III. JSX RETURN SECTION
