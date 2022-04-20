@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { MyContext } from "../../../context/myContext";
 import TodoItem from "./TodoItem";
 
 export default function TodoList({
@@ -9,6 +10,15 @@ export default function TodoList({
   handleSwitchEdit,
   handleKeyPress,
 }) {
+  const myContext = useContext(MyContext);
+
+  // ---------------------------------------------------------------------------------
+  // I. SIDE EFFECT HANDLE
+  // ---------------------------------------------------------------------------------
+  useEffect(() => {
+    console.log(myContext);
+  }, [myContext]);
+
   return (
     <>
       {filterList?.[0] ? (
