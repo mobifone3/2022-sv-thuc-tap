@@ -9,6 +9,8 @@ export default function ListItem({
   handleCheckBoxClick,
   handleSwitchEdit,
   handleOnChangeEdit,
+  // handleKeyPress,
+  handleShowButtonSave,
 }) {
   return (
     <>
@@ -23,6 +25,7 @@ export default function ListItem({
               onChange={(e) => {
                 handleOnChangeEdit(e, { id, name, isDone, isEdit });
               }}
+              // onKeyPress={handleKeyPress}
             ></input>
           ) : (
             <p className="m-0">{name}</p>
@@ -35,21 +38,25 @@ export default function ListItem({
             className="form-check-input "
             id="flexCheckDefault"
             type="checkbox"
-            onChange={() => handleCheckBoxClick(id)}
+            onChange={() => {
+              handleCheckBoxClick(id);
+            }}
           ></input>
           {isEdit ? (
             <i
               className="fa-solid  fa-check"
-              onClick={() =>
-                handleSwitchEdit(id, name, { id, name, isDone, isEdit })
-              }
+              onClick={() => {
+                handleSwitchEdit(id, name, { id, name, isDone, isEdit });
+                handleShowButtonSave(id);
+              }}
             ></i>
           ) : (
             <i
               className="fa-solid fa-pen"
-              onClick={() =>
-                handleSwitchEdit(id, name, { id, name, isDone, isEdit })
-              }
+              onClick={() => {
+                handleSwitchEdit(id, name, { id, name, isDone, isEdit });
+                handleShowButtonSave(id);
+              }}
             ></i>
           )}
           <i
