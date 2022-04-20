@@ -5,7 +5,6 @@ import Button from "./components/common/Button";
 import TodoBox from "./components/view/todoInput/TodoBox";
 import TodoList from "./components/view/toloList/TodoList";
 import { baseUrl } from "./apis";
-import Swal from "sweetalert2";
 
 export default function App() {
   const [value, setValue] = useState();
@@ -69,14 +68,13 @@ export default function App() {
       }
     }
   }, [listData, mode]);
-  //--------------
 
-  //---------------
   // ---------------------------------------------------------------------------------
   // II. HELPER FUNCION SECTION
   // ---------------------------------------------------------------------------------
   const handleOnChange = (e) => {
     setValue({ ...value, name: e.target.value, isCheck: false, isEdit: false });
+    console.log("e là gì :" + e.target);
   };
 
   const handleOnChangeEdit = (e, todo) => {
@@ -84,28 +82,19 @@ export default function App() {
     let foundIdx = newList.findIndex((item) => item.id === todo.id);
     newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
     setFilterList(newList);
-
-    // console.log(filterList[foundIdx]);
+    console.log(filterList[foundIdx]);
   };
-  const handleKeyPress = (e, id) => {
+  const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      let val = e.target.value;
-
-      axios.put(baseUrl + `todos/${id}`, { name: val }).then((res) => {
-        console.log(res.data);
-        getData();
-      });
-      Swal.fire("sửa thành công");
-      // let newList = [...listData];
-      // let foundIdx = newList.findIndex((item) => item.isEdit);
-      // newList.splice(foundIdx, 1, inputEdit);
-      // newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
-      // newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
-      // setListData(newList);
-      // setFilterList(newList);
+      let newList = [...listData];
+      let foundIdx = newList.findIndex((item) => item.isEdit);
+      newList.splice(foundIdx, 1, inputEdit);
+      newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+      newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+      setListData(newList);
+      setFilterList(newList);
     }
   };
-
   const getData = () => {
     axios.get(baseUrl + "todos").then((res) => {
       setListData(res.data);
@@ -123,32 +112,17 @@ export default function App() {
     axios
       .post(baseUrl + "/todos", value)
       .then((res) => {
-        console.log(res);
-        if (res.status === 201) {
-          Swal.fire("Thêm thành công");
+        if (res) {
           getData();
         }
       })
       .catch((err) => console.log(err));
+
     setValue("");
   };
 
-  const handleDeleteTodoById = (id) => {
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        axios.delete(baseUrl + `todos/${id}`).then((res) => {
-          if (res) {
-            getData();
-          }
-        });
-        Swal.fire("xóa thành công", "", "success");
-      }
-    });
+  const handleDeleteTodoById = async (id) => {
+    await axios.delete(baseUrl + `todos/${id}`);
   };
 
   const handleCheckBoxClick = (id) => {
@@ -159,18 +133,14 @@ export default function App() {
     setFilterList(newList);
   };
 
-  const handleSwitchEdit = (id, name, todo) => {
-    let newList = [...filterList];
-    let index = newList.findIndex((idx) => idx.id === id);
+  const handleSwitchEdit = (id, name) => {
+    let newList = [...listData];
+    let foundIdx = newList.findIndex((item) => item.id === id);
+    newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+    newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
 
-    newList[index].isEdit = !newList[index].isEdit;
+    setListData(newList);
     setFilterList(newList);
-    if (!newList[index].isEdit) {
-      axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
-        getData();
-      });
-      Swal.fire("Sửa thành công");
-    }
   };
 
   // ---------------------------------------------------------------------------------
@@ -178,55 +148,14 @@ export default function App() {
     setMode(mode);
   };
 
-  const handleDeleteDone = () => {
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        [...filterList].filter((todo) => {
-          if (todo.isCheck) {
-            return axios.delete(baseUrl + `/todos/${todo.id}`).then(() => getData());
-          }
-          return false;
-        });
-        Swal.fire("xóa thành công", "", "success");
-      }
-    });
+  const handleDeleteDone = async () => {
+    let newList = listData?.filter((todo) => !todo.isCheck);
+    await axios.put(baseUrl + "/todo", newList);
+    // setListData(newList);
+    // setFilterList(newList);
   };
-  const handleDeleteAll = () => {
-    //--------------------------------------------------
-    // để khắc phục tình trạng to many requests -- xóa theo đồng bộ
-    // new Promise(async () => {
-    //   for (const todo of listData) {
-    //     await axios.delete(baseUrl + `/todos/${todo.id}`);
-    //   }
-    // });
-    //--------------------------------------------------
-    //--- xóa theo bất đồng bộ
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Promise.all(
-          [...listData].map((todo) => {
-            return axios
-              .delete(baseUrl + `/todos/${todo.id}`)
-              .then(() => {
-                getData();
-              })
-              .catch((err) => console.log(err));
-          })
-        );
-        Swal.fire("xóa thành công", "", "success");
-      }
-    });
-  };
+
+  const handleDeleteAll = async () => {};
 
   // ---------------------------------------------------------------------------------
   // III. JSX RETURN SECTION

@@ -25,9 +25,9 @@ export default function TodoItem({ id, name, isCheck, isEdit, handleCheckBoxClic
             id="flexCheckDefault"
           />
           {isEdit ? (
-            <i className="fa-solid fa-check todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name, { id, name, isCheck, isEdit })}></i>
+            <i className="fa-solid fa-check todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name, isCheck, isEdit)}></i>
           ) : (
-            <i className="fa-solid fa-pen todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name, { id, name, isCheck, isEdit })}></i>
+            <i className="fa-solid fa-pen todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name)}></i>
           )}
 
           <i className="fa-solid fa-trash todo_icon_remove" style={commonStyle} onClick={() => handleDeleteTodoById(id)}></i>

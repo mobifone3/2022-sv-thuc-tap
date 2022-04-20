@@ -163,8 +163,6 @@ export default function App() {
     let newList = [...filterList];
     let index = newList.findIndex((idx) => idx.id === id);
 
-    newList[index].isEdit = !newList[index].isEdit;
-    setFilterList(newList);
     if (!newList[index].isEdit) {
       axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
         getData();

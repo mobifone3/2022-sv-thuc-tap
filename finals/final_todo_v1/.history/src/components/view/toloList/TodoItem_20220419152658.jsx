@@ -7,11 +7,7 @@ export default function TodoItem({ id, name, isCheck, isEdit, handleCheckBoxClic
   return (
     <li className={`row todo_item ${isCheck ? "bg-info text-light" : ""}`}>
       <div className="col-8">
-        {isEdit ? (
-          <input value={name || ""} type="text" name="name" className="form-control" onChange={(e) => handleOnChangeEdit(e, { id, name, isCheck, isEdit })} onKeyPress={(e) => handleKeyPress(e, id)}></input>
-        ) : (
-          <p className="todo_name">{name}</p>
-        )}
+        {isEdit ? <input value={name || ""} type="text" name="name" className="form-control" onChange={(e) => handleOnChangeEdit(e, { id, name, isCheck, isEdit })} onKeyPress={handleKeyPress}></input> : <p className="todo_name">{name}</p>}
       </div>
       <div className="col-4 d-flex justify-content-end">
         <div className="form-check">
@@ -24,11 +20,7 @@ export default function TodoItem({ id, name, isCheck, isEdit, handleCheckBoxClic
             }}
             id="flexCheckDefault"
           />
-          {isEdit ? (
-            <i className="fa-solid fa-check todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name, { id, name, isCheck, isEdit })}></i>
-          ) : (
-            <i className="fa-solid fa-pen todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name, { id, name, isCheck, isEdit })}></i>
-          )}
+          {isEdit ? <i className="fa-solid fa-check todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name)}></i> : <i className="fa-solid fa-pen todo_icon_pen" style={commonStyle} onClick={() => handleSwitchEdit(id, name)}></i>}
 
           <i className="fa-solid fa-trash todo_icon_remove" style={commonStyle} onClick={() => handleDeleteTodoById(id)}></i>
         </div>

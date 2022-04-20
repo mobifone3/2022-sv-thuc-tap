@@ -5,7 +5,6 @@ import Button from "./components/common/Button";
 import TodoBox from "./components/view/todoInput/TodoBox";
 import TodoList from "./components/view/toloList/TodoList";
 import { baseUrl } from "./apis";
-import Swal from "sweetalert2";
 
 export default function App() {
   const [value, setValue] = useState();
@@ -80,22 +79,21 @@ export default function App() {
   };
 
   const handleOnChangeEdit = (e, todo) => {
+    let val = e.target.value;
     let newList = [...filterList];
     let foundIdx = newList.findIndex((item) => item.id === todo.id);
     newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
     setFilterList(newList);
-
+    axios.put(baseUrl + `todos/${todo.id}`, { name: val }).then((res) => {
+      console.log(res.data);
+      getData();
+    });
     // console.log(filterList[foundIdx]);
   };
-  const handleKeyPress = (e, id) => {
+  const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       let val = e.target.value;
-
-      axios.put(baseUrl + `todos/${id}`, { name: val }).then((res) => {
-        console.log(res.data);
-        getData();
-      });
-      Swal.fire("sửa thành công");
+      console.log(val);
       // let newList = [...listData];
       // let foundIdx = newList.findIndex((item) => item.isEdit);
       // newList.splice(foundIdx, 1, inputEdit);
@@ -123,9 +121,7 @@ export default function App() {
     axios
       .post(baseUrl + "/todos", value)
       .then((res) => {
-        console.log(res);
-        if (res.status === 201) {
-          Swal.fire("Thêm thành công");
+        if (res) {
           getData();
         }
       })
@@ -134,19 +130,9 @@ export default function App() {
   };
 
   const handleDeleteTodoById = (id) => {
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        axios.delete(baseUrl + `todos/${id}`).then((res) => {
-          if (res) {
-            getData();
-          }
-        });
-        Swal.fire("xóa thành công", "", "success");
+    axios.delete(baseUrl + `todos/${id}`).then((res) => {
+      if (res) {
+        getData();
       }
     });
   };
@@ -159,18 +145,13 @@ export default function App() {
     setFilterList(newList);
   };
 
-  const handleSwitchEdit = (id, name, todo) => {
-    let newList = [...filterList];
-    let index = newList.findIndex((idx) => idx.id === id);
-
-    newList[index].isEdit = !newList[index].isEdit;
+  const handleSwitchEdit = (id, name) => {
+    let newList = [...listData];
+    let foundIdx = newList.findIndex((item) => item.id === id);
+    newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+    newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+    setListData(newList);
     setFilterList(newList);
-    if (!newList[index].isEdit) {
-      axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
-        getData();
-      });
-      Swal.fire("Sửa thành công");
-    }
   };
 
   // ---------------------------------------------------------------------------------
@@ -179,21 +160,11 @@ export default function App() {
   };
 
   const handleDeleteDone = () => {
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        [...filterList].filter((todo) => {
-          if (todo.isCheck) {
-            return axios.delete(baseUrl + `/todos/${todo.id}`).then(() => getData());
-          }
-          return false;
-        });
-        Swal.fire("xóa thành công", "", "success");
+    [...filterList].filter((todo) => {
+      if (todo.isCheck) {
+        return axios.delete(baseUrl + `/todos/${todo.id}`).then(() => getData());
       }
+      return false;
     });
   };
   const handleDeleteAll = () => {
@@ -206,26 +177,16 @@ export default function App() {
     // });
     //--------------------------------------------------
     //--- xóa theo bất đồng bộ
-    Swal.fire({
-      title: "Bạn có muốn lưu thay đổi",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Promise.all(
-          [...listData].map((todo) => {
-            return axios
-              .delete(baseUrl + `/todos/${todo.id}`)
-              .then(() => {
-                getData();
-              })
-              .catch((err) => console.log(err));
+    Promise.all(
+      [...listData].map((todo) => {
+        return axios
+          .delete(baseUrl + `/todos/${todo.id}`)
+          .then(() => {
+            getData();
           })
-        );
-        Swal.fire("xóa thành công", "", "success");
-      }
-    });
+          .catch((err) => console.log(err));
+      })
+    );
   };
 
   // ---------------------------------------------------------------------------------

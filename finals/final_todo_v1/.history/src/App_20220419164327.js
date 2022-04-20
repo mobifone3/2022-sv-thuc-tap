@@ -80,11 +80,15 @@ export default function App() {
   };
 
   const handleOnChangeEdit = (e, todo) => {
+    let val = e.target.value;
     let newList = [...filterList];
     let foundIdx = newList.findIndex((item) => item.id === todo.id);
     newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
     setFilterList(newList);
-
+    axios.put(baseUrl + `todos/${todo.id}`, { name: val }).then((res) => {
+      getData();
+    });
+    Swal.fire("Sửa thành công");
     // console.log(filterList[foundIdx]);
   };
   const handleKeyPress = (e, id) => {
@@ -159,18 +163,13 @@ export default function App() {
     setFilterList(newList);
   };
 
-  const handleSwitchEdit = (id, name, todo) => {
-    let newList = [...filterList];
-    let index = newList.findIndex((idx) => idx.id === id);
-
-    newList[index].isEdit = !newList[index].isEdit;
+  const handleSwitchEdit = (id, name) => {
+    let newList = [...listData];
+    let foundIdx = newList.findIndex((item) => item.id === id);
+    newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+    newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+    setListData(newList);
     setFilterList(newList);
-    if (!newList[index].isEdit) {
-      axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
-        getData();
-      });
-      Swal.fire("Sửa thành công");
-    }
   };
 
   // ---------------------------------------------------------------------------------
