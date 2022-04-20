@@ -8,6 +8,8 @@ export default function TodoList({
   handleCheckBoxClick,
   handleSwitchEdit,
   handleOnChangeEdit,
+  // handleKeyPress,
+  handleShowButtonSave,
 }) {
   return (
     <>
@@ -25,6 +27,8 @@ export default function TodoList({
               handleCheckBoxClick={handleCheckBoxClick}
               handleSwitchEdit={handleSwitchEdit}
               handleOnChangeEdit={handleOnChangeEdit}
+              // handleKeyPress={handleKeyPress}
+              handleShowButtonSave={handleShowButtonSave}
             ></ListItem>
           ))}
         </ul>
