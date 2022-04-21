@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 import { MyContext } from "./context/myContext";
 
@@ -7,8 +8,12 @@ import Button from "./components/common/Button";
 import TodoBox from "./components/view/todoInput/TodoBox";
 import TodoList from "./components/view/toloList/TodoList";
 import { baseUrl } from "./apis";
+import { todoActions } from "./redux/todoActions";
 
 export default function App() {
+  const todos = useSelector((state) => state.todo.todos);
+  const dispatch = useDispatch();
+
   const [value, setValue] = useState();
   const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState();
@@ -19,22 +24,19 @@ export default function App() {
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
-
   useEffect(() => {
-    if (!listData) {
-      axios.get(baseUrl + "todos").then((res) => {
-        if (res.data || res.code === 200) {
-          setListData(res.data instanceof Array ? res.data : [res.data]);
-          setFilterList(res.data instanceof Array ? res.data : [res.data]);
-        }
-      });
+    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+      setFilterList(todos);
+      setListData(todos);
+    }
+  }, [todos]);
+
+  // ---------------------------------------------------------------------------------
+  useEffect(() => {
+    if (!listData && !listData?.[0]) {
+      dispatch(todoActions.getAllTodo());
     }
   }, [listData]);
-
-  // 2. Gọi API lấy dữ liệu ban đầu cho component này
-  useEffect(() => {
-    // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
-  }, []);
 
   useEffect(() => {
     if (mode) {
