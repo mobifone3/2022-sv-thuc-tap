@@ -8,6 +8,12 @@ export const todoActions = {
 
   WIPE_TODO_DATA: "WIPE_TODO_DATA",
 
+  wipeTodoData: () => {
+    return {
+      type: todoActions.WIPE_TODO_DATA,
+    };
+  },
+
   getAllTodo: () => {
     return (dispatch) => {
       dispatch(todoActions.getAllTodoStart());
