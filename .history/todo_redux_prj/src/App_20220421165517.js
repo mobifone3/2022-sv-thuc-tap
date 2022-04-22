@@ -11,7 +11,8 @@ import { todoActions } from "./redux/todoAction";
 export default function App() {
   const todos = useSelector((state) => state.todo.todos);
   let filters = useSelector((state) => state.todo.filterList);
-
+  console.log("this is filter:", +filters);
+  console.log("đây là todo:" + todos);
   const dispatch = useDispatch();
   const [value, setValue] = useState();
 

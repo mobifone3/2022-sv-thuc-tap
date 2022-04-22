@@ -1,38 +1,71 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+
+import { MyContext } from "./context/myContext";
+
 import Button from "./components/common/Button";
 import TodoBox from "./components/view/todoInput/TodoBox";
 import TodoList from "./components/view/toloList/TodoList";
 import { baseUrl } from "./apis";
 import Swal from "sweetalert2";
-import { todoActions } from "./redux/todoAction";
+import { todoActions } from "./redux/todoActions";
 
 export default function App() {
   const todos = useSelector((state) => state.todo.todos);
-  let filters = useSelector((state) => state.todo.filterList);
-
   const dispatch = useDispatch();
-  const [value, setValue] = useState();
 
+  const [value, setValue] = useState();
+  const [inputEdit, setInputEdit] = useState();
   const [listData, setListData] = useState();
   const [mode, setMode] = useState();
-  const [filterList, setFilterList] = useState(filters);
+  const [filterList, setFilterList] = useState(() => []);
+  const myContext = useContext(MyContext);
+
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
   // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
-  useEffect(() => {
-    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
-      setListData(todos);
-    }
-  }, [filterList, listData, todos]);
 
   useEffect(() => {
-    if (!listData?.[0]) {
-      dispatch(todoActions.getAllData());
+    if (!listData) {
+      axios.get(baseUrl + "todos").then((res) => {
+        if (res.data || res.code === 200) {
+          setListData(res.data instanceof Array ? res.data : [res.data]);
+          setFilterList(res.data instanceof Array ? res.data : [res.data]);
+        }
+      });
     }
-  }, [dispatch, listData]);
+  }, [listData]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     axios.get(baseUrl + "todos").then((res) => {
+  //       if (res.data || res.code === 200) {
+  //         setListData(res.data instanceof Array ? res.data : [res.data]);
+  //         setFilterList(res.data instanceof Array ? res.data : [res.data]);
+  //       }
+  //     });
+  //   })();
+  // }, [listData]);
+  // console.log(listData);
+  // 2. Gọi API lấy dữ liệu ban đầu cho component này
+  useEffect(() => {
+    // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
+  }, []);
+  useEffect(() => {
+    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+      setFilterList(todos);
+      setListData(todos);
+    }
+  }, [todos]);
+
+  // ---------------------------------------------------------------------------------
+  useEffect(() => {
+    if (!listData && !listData?.[0]) {
+      dispatch(todoActions.getAllTodo());
+    }
+  }, [listData]);
 
   useEffect(() => {
     if (mode) {
@@ -77,6 +110,7 @@ export default function App() {
 
     // console.log(filterList[foundIdx]);
   };
+
   const handleKeyPress = (e, id) => {
     if (e.key === "Enter") {
       let val = e.target.value;
@@ -110,6 +144,7 @@ export default function App() {
     }
     let newData = [...listData];
     newData.push({ ...value });
+
     axios
       .post(baseUrl + "/todos", value)
       .then((res) => {
@@ -222,35 +257,37 @@ export default function App() {
   // III. JSX RETURN SECTION
   // ---------------------------------------------------------------------------------
   return (
-    <div className="App">
-      <div className="todo">
-        {/* -------------------------------------------------------------  */}
-        <h2 className="todo_title">Nhập Công Việc</h2>
-        <TodoBox handleOnChange={handleOnChange} handleOnClick={handleOnClickAdd} value={value}></TodoBox>
-        {/* -------------------------------------------------------------  */}
-        {/* DANH SÁCH CÔNG VIỆC */}
-        <div className="todo_main">
-          <h2 className="todo_title">Danh Sách Công Việc</h2>
-          <div className="todo_action">
-            <Button handleOnClick={() => handleChangeFilterMode("ALL")} value={"All"} className={"btn-info"}></Button>
-            <Button handleOnClick={() => handleChangeFilterMode("DONE")} value={"Done"} className={"btn-info"}></Button>
-            <Button handleOnClick={() => handleChangeFilterMode("TODO")} value={"Todo"} className={"btn-info"}></Button>
-          </div>
-          <TodoList
-            todoLists={listData}
-            filterList={filterList}
-            handleSwitchEdit={handleSwitchEdit}
-            handleCheckBoxClick={handleCheckBoxClick}
-            handleDeleteTodoById={handleDeleteTodoById}
-            handleOnChangeEdit={handleOnChangeEdit}
-            handleKeyPress={handleKeyPress}
-          ></TodoList>
-          <div className="todo_bottom">
-            <Button handleOnClick={handleDeleteDone} value={"Delete Done Tasks"} className={"btn-danger"}></Button>
-            <Button handleOnClick={handleDeleteAll} value={"Delete All Tasks"} className={"btn-danger"}></Button>
+    <MyContext.Provider value={{ ...myContext, handleOnChange, handleOnClickAdd, handleChangeFilterMode }}>
+      <div className="App">
+        <div className="todo">
+          {/* -------------------------------------------------------------  */}
+          <h2 className="todo_title">Nhập Công Việc</h2>
+          <TodoBox handleOnChange={handleOnChange} handleOnClick={handleOnClickAdd} value={value}></TodoBox>
+          {/* -------------------------------------------------------------  */}
+          {/* DANH SÁCH CÔNG VIỆC */}
+          <div className="todo_main">
+            <h2 className="todo_title">Danh Sách Công Việc</h2>
+            <div className="todo_action">
+              <Button handleOnClick={() => handleChangeFilterMode("ALL")} value={"All"} className={"btn-info"}></Button>
+              <Button handleOnClick={() => handleChangeFilterMode("DONE")} value={"Done"} className={"btn-info"}></Button>
+              <Button handleOnClick={() => handleChangeFilterMode("TODO")} value={"Todo"} className={"btn-info"}></Button>
+            </div>
+            <TodoList
+              todoLists={listData}
+              filterList={filterList}
+              handleSwitchEdit={handleSwitchEdit}
+              handleCheckBoxClick={handleCheckBoxClick}
+              handleDeleteTodoById={handleDeleteTodoById}
+              handleOnChangeEdit={handleOnChangeEdit}
+              handleKeyPress={handleKeyPress}
+            ></TodoList>
+            <div className="todo_bottom">
+              <Button handleOnClick={handleDeleteDone} value={"Delete Done Tasks"} className={"btn-danger"}></Button>
+              <Button handleOnClick={handleDeleteAll} value={"Delete All Tasks"} className={"btn-danger"}></Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </MyContext.Provider>
   );
 }

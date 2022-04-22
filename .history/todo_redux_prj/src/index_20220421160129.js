@@ -26,7 +26,7 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
-import reducers from "./redux/todoStore";
+import reducers from "./redux/store";
 import { Provider } from "react-redux";
 /** import component */
 import App from "./App";

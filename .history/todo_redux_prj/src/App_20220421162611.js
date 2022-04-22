@@ -10,29 +10,30 @@ import { todoActions } from "./redux/todoAction";
 
 export default function App() {
   const todos = useSelector((state) => state.todo.todos);
-  let filters = useSelector((state) => state.todo.filterList);
-
+  const filters = useSelector((state) => state.todo.filterList);
+  console.log("this is filter:", +filters);
+  console.log("đây là todo:" + todos);
   const dispatch = useDispatch();
   const [value, setValue] = useState();
 
   const [listData, setListData] = useState();
   const [mode, setMode] = useState();
-  const [filterList, setFilterList] = useState(filters);
+  const [filterList, setFilterList] = useState();
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
   // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
-  useEffect(() => {
-    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
-      setListData(todos);
-    }
-  }, [filterList, listData, todos]);
+  // useEffect(() => {
+  //   if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+  //     setListData(todos);
+  //   }
+  // }, [todos]);
 
-  useEffect(() => {
-    if (!listData?.[0]) {
-      dispatch(todoActions.getAllData());
-    }
-  }, [dispatch, listData]);
+  // useEffect(() => {
+  //   if (!listData?.[0]) {
+  //     dispatch(todoActions.getAllData());
+  //   }
+  // }, [listData]);
 
   useEffect(() => {
     if (mode) {

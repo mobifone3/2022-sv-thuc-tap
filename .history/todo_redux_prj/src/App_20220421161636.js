@@ -10,30 +10,46 @@ import { todoActions } from "./redux/todoAction";
 
 export default function App() {
   const todos = useSelector((state) => state.todo.todos);
-  let filters = useSelector((state) => state.todo.filterList);
-
   const dispatch = useDispatch();
   const [value, setValue] = useState();
 
   const [listData, setListData] = useState();
   const [mode, setMode] = useState();
-  const [filterList, setFilterList] = useState(filters);
+  const [filterList, setFilterList] = useState(() => []);
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
   // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
   useEffect(() => {
-    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+    if (!todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+      setFilterList(todos);
       setListData(todos);
     }
-  }, [filterList, listData, todos]);
+  }, [todos]);
 
   useEffect(() => {
-    if (!listData?.[0]) {
+    if (!listData && !listData?.[0]) {
       dispatch(todoActions.getAllData());
     }
-  }, [dispatch, listData]);
+  }, [listData]);
 
+  // ---------------------------------------------------------------------------------
+
+  // useEffect(() => {
+  //   (async () => {
+  //     axios.get(baseUrl + "todos").then((res) => {
+  //       if (res.data || res.code === 200) {
+  //         setListData(res.data instanceof Array ? res.data : [res.data]);
+  //         setFilterList(res.data instanceof Array ? res.data : [res.data]);
+  //       }
+  //     });
+  //   })();
+  // }, [listData]);
+  // console.log(listData);
+  // 2. Gọi API lấy dữ liệu ban đầu cho component này
+  useEffect(() => {
+    // console.log("DEBUG --> GOI KHI KHOI TAO 1 LAN DUY NHAT");
+  }, []);
   useEffect(() => {
     if (mode) {
       let filterList = [];

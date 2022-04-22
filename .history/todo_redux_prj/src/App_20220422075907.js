@@ -17,7 +17,7 @@ export default function App() {
 
   const [listData, setListData] = useState();
   const [mode, setMode] = useState();
-  const [filterList, setFilterList] = useState(filters);
+  const [filterList, setFilterList] = useState(filter);
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
