@@ -65,6 +65,9 @@ export default function App() {
     if (!listData && !listData?.[0]) {
       dispatch(todoActions.getAllTodo());
     }
+    if (listData?.[0]) {
+      dispatch(todoActions.wipeTodoData());
+    }
   }, [listData]);
 
   useEffect(() => {

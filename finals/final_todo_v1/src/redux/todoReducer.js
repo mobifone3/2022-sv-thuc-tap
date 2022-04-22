@@ -28,7 +28,7 @@ export function todoReducer(state = initialState, action) {
       };
 
     case todoActions.WIPE_TODO_DATA:
-      return { ...state, todo: [] };
+      return initialState;
 
     default:
       return state;
