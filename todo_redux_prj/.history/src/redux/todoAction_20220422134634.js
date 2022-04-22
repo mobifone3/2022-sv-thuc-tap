@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import { baseUrl } from "../apis/index";
 export const todoActions = {
   GET_ALL_TODO_START: "GET_ALL_TODO_START",
@@ -36,43 +35,18 @@ export const todoActions = {
   },
   insertData: (value) => {
     return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
       axios
-        .post(baseUrl + "todos", value)
+        .post(baseUrl + "/todos", value)
         .then((res) => {
-          if (res.status === 201) {
-            console.log(res.data);
+          if (res.code === 201) {
             Swal.fire("Thêm thành công");
-            dispatch(todoActions.getAllData());
-            return dispatch(todoActions.getAllTodoSuccess([res.data]));
+            return dispatch(todoActions.getAllTodoSuccess(res.data));
           }
           return dispatch(todoActions.getAllTodoFail());
         })
         .catch((res) => {
           console.log(res);
         });
-    };
-  },
-  deleteData: (id) => {
-    return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
-      axios.delete(baseUrl + `todos/${id}`).then((res) => {
-        if (res.data && res.status === 200) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
-      });
-    };
-  },
-  updateData: (id, value) => {
-    return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
-      axios.put(baseUrl + `todos/${id}`, value).then((res) => {
-        if (res.status === 200 && res.data) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
-      });
     };
   },
 };

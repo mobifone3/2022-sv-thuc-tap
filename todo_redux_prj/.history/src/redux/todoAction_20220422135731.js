@@ -35,44 +35,23 @@ export const todoActions = {
     };
   },
   insertData: (value) => {
+    console.log(value);
     return (dispatch) => {
       dispatch(todoActions.getAllTodoStart());
       axios
         .post(baseUrl + "todos", value)
         .then((res) => {
-          if (res.status === 201) {
-            console.log(res.data);
+          console.log(res.data);
+          if (res.code === 201) {
             Swal.fire("Thêm thành công");
-            dispatch(todoActions.getAllData());
-            return dispatch(todoActions.getAllTodoSuccess([res.data]));
+
+            return dispatch(todoActions.getAllData());
           }
           return dispatch(todoActions.getAllTodoFail());
         })
         .catch((res) => {
           console.log(res);
         });
-    };
-  },
-  deleteData: (id) => {
-    return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
-      axios.delete(baseUrl + `todos/${id}`).then((res) => {
-        if (res.data && res.status === 200) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
-      });
-    };
-  },
-  updateData: (id, value) => {
-    return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
-      axios.put(baseUrl + `todos/${id}`, value).then((res) => {
-        if (res.status === 200 && res.data) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
-      });
     };
   },
 };

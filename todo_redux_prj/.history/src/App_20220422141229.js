@@ -16,19 +16,29 @@ export default function App() {
   const [listData, setListData] = useState();
   const [mode, setMode] = useState();
   const [filterList, setFilterList] = useState();
+  console.log(filterRedux);
   // ---------------------------------------------------------------------------------
   // I. SIDE EFFECT HANDLE
   // ---------------------------------------------------------------------------------
   // 1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc [] và thực hiện hàm trong cặp () => {}
   useEffect(() => {
-    if ((todos?.[0] && !listData?.[0]) || !listData?.[0]) {
-      dispatch(todoActions.getAllData());
+    if (todos?.[0] && !listData?.[0]) {
       setListData(todos);
     }
-    if (filterRedux?.[0]) {
-      setFilterList(filterRedux);
+  }, [listData, todos]);
+  // useEffect(() => {
+  //   first
+
+  //   return () => {
+  //     second
+  //   }
+  // }, [third])
+
+  useEffect(() => {
+    if (!listData?.[0]) {
+      dispatch(todoActions.getAllData());
     }
-  }, [listData, todos, filterRedux, dispatch]);
+  }, [listData]);
 
   useEffect(() => {
     if (mode) {
@@ -81,6 +91,13 @@ export default function App() {
         getData();
       });
       Swal.fire("sửa thành công");
+      // let newList = [...listData];
+      // let foundIdx = newList.findIndex((item) => item.isEdit);
+      // newList.splice(foundIdx, 1, inputEdit);
+      // newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
+      // newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+      // setListData(newList);
+      // setFilterList(newList);
     }
   };
 
@@ -98,7 +115,16 @@ export default function App() {
     }
     let newData = [...listData];
     newData.push({ ...value });
-    //--- using redux to insert
+    // axios
+    //   .post(baseUrl + "/todos", value)
+    //   .then((res) => {
+    //     console.log(res);
+    //     if (res.status === 201) {
+    //       Swal.fire("Thêm thành công");
+    //       getData();
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     dispatch(todoActions.insertData(value));
     setValue("");
   };
@@ -111,7 +137,11 @@ export default function App() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        dispatch(todoActions.deleteData(id));
+        axios.delete(baseUrl + `todos/${id}`).then((res) => {
+          if (res) {
+            getData();
+          }
+        });
         Swal.fire("xóa thành công", "", "success");
       }
     });
@@ -121,18 +151,20 @@ export default function App() {
     let newList = [...listData];
     let foundIdx = newList.findIndex((item) => item.id === id);
     newList[foundIdx].isCheck = !newList[foundIdx].isCheck;
+    setListData(newList);
     setFilterList(newList);
-    console.log(filterList[foundIdx]);
   };
 
   const handleSwitchEdit = (id, name, todo) => {
     let newList = [...filterList];
     let index = newList.findIndex((idx) => idx.id === id);
+
     newList[index].isEdit = !newList[index].isEdit;
-    newList[index].isCheck = !newList[index].isCheck;
     setFilterList(newList);
     if (!newList[index].isEdit) {
-      dispatch(todoActions.updateData(id, { ...todo, isCheck: false, isEdit: false }));
+      axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
+        getData();
+      });
       Swal.fire("Sửa thành công");
     }
   };
@@ -152,7 +184,7 @@ export default function App() {
       if (result.isConfirmed) {
         [...filterList].filter((todo) => {
           if (todo.isCheck) {
-            return dispatch(todoActions.deleteData(todo.id));
+            return axios.delete(baseUrl + `/todos/${todo.id}`).then(() => getData());
           }
           return false;
         });
@@ -179,7 +211,12 @@ export default function App() {
       if (result.isConfirmed) {
         Promise.all(
           [...listData].map((todo) => {
-            return dispatch(todoActions.deleteData(todo.id));
+            return axios
+              .delete(baseUrl + `/todos/${todo.id}`)
+              .then(() => {
+                getData();
+              })
+              .catch((err) => console.log(err));
           })
         );
         Swal.fire("xóa thành công", "", "success");

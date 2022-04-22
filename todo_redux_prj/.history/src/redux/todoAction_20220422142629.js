@@ -35,6 +35,7 @@ export const todoActions = {
     };
   },
   insertData: (value) => {
+    console.log(value);
     return (dispatch) => {
       dispatch(todoActions.getAllTodoStart());
       axios
@@ -57,21 +58,7 @@ export const todoActions = {
     return (dispatch) => {
       dispatch(todoActions.getAllTodoStart());
       axios.delete(baseUrl + `todos/${id}`).then((res) => {
-        if (res.data && res.status === 200) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
-      });
-    };
-  },
-  updateData: (id, value) => {
-    return (dispatch) => {
-      dispatch(todoActions.getAllTodoStart());
-      axios.put(baseUrl + `todos/${id}`, value).then((res) => {
-        if (res.status === 200 && res.data) {
-          dispatch(todoActions.getAllData());
-          return dispatch(todoActions.getAllTodoSuccess(res.data));
-        }
+        console.log(res);
       });
     };
   },

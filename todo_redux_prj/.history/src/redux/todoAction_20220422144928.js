@@ -35,6 +35,7 @@ export const todoActions = {
     };
   },
   insertData: (value) => {
+    console.log(value);
     return (dispatch) => {
       dispatch(todoActions.getAllTodoStart());
       axios

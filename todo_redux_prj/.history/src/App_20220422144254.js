@@ -132,7 +132,9 @@ export default function App() {
     newList[index].isCheck = !newList[index].isCheck;
     setFilterList(newList);
     if (!newList[index].isEdit) {
-      dispatch(todoActions.updateData(id, { ...todo, isCheck: false, isEdit: false }));
+      axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
+        getData();
+      });
       Swal.fire("Sửa thành công");
     }
   };
@@ -152,7 +154,8 @@ export default function App() {
       if (result.isConfirmed) {
         [...filterList].filter((todo) => {
           if (todo.isCheck) {
-            return dispatch(todoActions.deleteData(todo.id));
+            console.log(todo.id);
+            // return dispatch(todoActions.deleteData(todo.id));
           }
           return false;
         });
@@ -179,7 +182,12 @@ export default function App() {
       if (result.isConfirmed) {
         Promise.all(
           [...listData].map((todo) => {
-            return dispatch(todoActions.deleteData(todo.id));
+            return axios
+              .delete(baseUrl + `/todos/${todo.id}`)
+              .then(() => {
+                getData();
+              })
+              .catch((err) => console.log(err));
           })
         );
         Swal.fire("xóa thành công", "", "success");

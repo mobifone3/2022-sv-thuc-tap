@@ -133,6 +133,9 @@ export default function App() {
     setFilterList(newList);
     if (!newList[index].isEdit) {
       dispatch(todoActions.updateData(id, { ...todo, isCheck: false, isEdit: false }));
+      // axios.put(baseUrl + `todos/${id}`, { ...todo, isCheck: false, isEdit: false }).then((res) => {
+      //   getData();
+      // });
       Swal.fire("Sửa thành công");
     }
   };
