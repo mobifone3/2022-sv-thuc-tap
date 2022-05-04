@@ -10,13 +10,14 @@ export default function ListItem({
   handleSwitchEdit,
   handleOnChangeEdit,
   // handleKeyPress,
-  handleShowButtonSave,
+  // handleShowButtonSave,
+  handlePopupClick,
 }) {
   return (
     <>
       <li className={`${isDone ? "bg-secondary text-light" : ""}`}>
         <div className="col-8">
-          {isEdit ? (
+          {/* {isEdit ? (
             <input
               type="text"
               value={name || ""}
@@ -27,9 +28,9 @@ export default function ListItem({
               }}
               // onKeyPress={handleKeyPress}
             ></input>
-          ) : (
-            <p className="m-0">{name}</p>
-          )}
+          ) : ( */}
+          <p className="m-0">{name}</p>
+          {/* )} */}
         </div>
 
         <div className="col-4 d-flex justify-content-end align-items-center form-check">
@@ -42,7 +43,7 @@ export default function ListItem({
               handleCheckBoxClick(id);
             }}
           ></input>
-          {isEdit ? (
+          {/* {isEdit ? (
             <i
               className="fa-solid  fa-check"
               onClick={() => {
@@ -50,15 +51,16 @@ export default function ListItem({
                 handleShowButtonSave(id);
               }}
             ></i>
-          ) : (
-            <i
-              className="fa-solid fa-pen"
-              onClick={() => {
-                handleSwitchEdit(id, name, { id, name, isDone, isEdit });
-                handleShowButtonSave(id);
-              }}
-            ></i>
-          )}
+          ) : ( */}
+          <i
+            className="fa-solid fa-pen"
+            onClick={() => {
+              // handleSwitchEdit(id, name, { id, name, isDone, isEdit });
+              // handleShowButtonSave(id);
+              handlePopupClick(true);
+            }}
+          ></i>
+          {/* )} */}
           <i
             className="fa-solid fa-trash"
             onClick={() => handleDeleteTodoById(id)}
