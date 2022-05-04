@@ -9,7 +9,8 @@ export default function TodoList({
   handleSwitchEdit,
   handleOnChangeEdit,
   // handleKeyPress,
-  handleShowButtonSave,
+  // handleShowButtonSave,
+  handlePopupClick,
 }) {
   return (
     <>
@@ -28,7 +29,8 @@ export default function TodoList({
               handleSwitchEdit={handleSwitchEdit}
               handleOnChangeEdit={handleOnChangeEdit}
               // handleKeyPress={handleKeyPress}
-              handleShowButtonSave={handleShowButtonSave}
+              // handleShowButtonSave={handleShowButtonSave}
+              handlePopupClick={handlePopupClick}
             ></ListItem>
           ))}
         </ul>

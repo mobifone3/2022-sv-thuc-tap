@@ -1,35 +1,56 @@
 import React, { useState, useEffect } from "react";
 // import { uuidv4 } from "./utils/uuidv4";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import TodoInput from "./views/TodoInput";
 import TodoList from "./views/TodoList";
 import Button from "./Common/Button";
+import Popup from "./views/TodoList/Popup";
+
 import { baseURL } from "./apis";
+import { todoActions } from "./redux/todoActions";
 
 import "./assets/style.css";
 
-function App() {
+export default function App() {
+  const todos = useSelector((state) => state.todo.todos);
+  // const filterTodos = useSelector((state) => state.todo.filterTodos);
+  // console.log("DEBUG FILTERTODOS-->", filterTodos);
+
+  const dispatch = useDispatch();
+
   //useState luư trữ dữ liêu và cập nhật
   const [value, setValue] = useState();
   const [listData, setListData] = useState();
-  const [filterList, setFilerList] = useState([]);
-  const [showSave, setShowSave] = useState(false);
+  const [filterList, setFilerList] = useState(() => []);
+  // const [showSave, setShowSave] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
 
   //----------------------------------------------------------------
   //I. SIDE EFFECT HANDLE
   //----------------------------------------------------------------
   //1. Theo dõi sự thay đổi của state truyền vào cặp ngoặc[] và thực hiện hàm trong cặp ()=>{}
   useEffect(() => {
-    if (!listData) {
-      axios.get(baseURL + "/todos").then((res) => {
-        if (res?.status === 200 && res?.data) {
-          setListData(res.data instanceof Array ? res.data : [res.data]);
-          setFilerList(res.data instanceof Array ? res.data : [res.data]);
-        }
-      });
+    if (todos?.[0] && !listData?.[0] && !filterList?.[0]) {
+      setListData(todos);
+      setFilerList(todos);
+    }
+  }, [todos]);
+  //----------------------------------------------------------------
+  useEffect(() => {
+    if (!listData && !listData?.[0]) {
+      dispatch(todoActions.getAllTodo());
     }
   }, [listData]);
+
+  // useEffect(() => {
+  //   if (todoAdd?.[0]) {
+  //     dispatch(todoActions.getAddTodo());
+  //     setListData(todoAdd);
+  //     setFilerList(todoAdd);
+  //   }
+  // }, [todoAdd]);
   //----------------------------------------------------------------
   //II. HELPER FUNCTION SECTION
   //----------------------------------------------------------------
@@ -59,39 +80,13 @@ function App() {
   //   }
   // };
 
-  const handleShowButtonSave = (mode, id, todo) => {
-    if (mode > 1) {
-      setShowSave(true);
-    } else {
-      setShowSave(false);
-    }
-
-    // let newList = [...filterList];
-    // let foundIdx = newList.findIndex((item) => item.id === id);
-
-    // newList[foundIdx].isEdit = !newList[foundIdx].isEdit;
-    // setFilerList(newList);
-
-    // let res = axios.get(baseURL + "/todos").then((res) => {});
-    // newList[foundIdx] = res.data;
-
-    // if (newList[foundIdx].isEdit > 2) {
-    //   setShowSave(true);
-
-    //   axios
-    //     .put(baseURL + `/todos/${id}`, {
-    //       ...todo,
-    //       isEdit: false,
-    //       isDone: false,
-    //     })
-    //     .then((res) => {
-    //       axios.get(baseURL + "/todos").then((res) => {
-    //         setListData(res.data);
-    //         setFilerList(res.data);
-    //       });
-    //     });
-    // }
-  };
+  // const handleShowButtonSave = (mode, id, todo) => {
+  //   if (mode > 1) {
+  //     setShowSave(true);
+  //   } else {
+  //     setShowSave(false);
+  //   }
+  // };
 
   //----------------------------------------------------------------
   const handleOnClickAdd = () => {
@@ -101,33 +96,29 @@ function App() {
     }
     let newData = [...listData];
     newData.push({ ...value });
+    dispatch(todoActions.AddTodo(value));
 
-    axios
-      .post(baseURL + "/todos", value)
-      .then((res) => {
-        axios.get(baseURL + "/todos").then((res) => {
-          setListData(res.data);
-          setFilerList(res.data);
-        });
-      })
-      .catch((err) => {
-        alert(err.toString());
-      });
+    // axios
+    //   .post(baseURL + "/todos", value)
+    //   .then((res) => {
+    //     axios.get(baseURL + "/todos").then((res) => {
+    //       setListData(res.data);
+    //       setFilerList(res.data);
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     alert(err.toString());
+    //   });
     setValue("");
   };
 
-  const handleDeleteTodoById = async (id) => {
-    await axios.delete(baseURL + `/todos/${id}`).then((res) => {
-      axios.get(baseURL + "/todos").then((res) => {
-        setListData(res.data);
-        setFilerList(res.data);
-      });
-    });
-    // let newList = [...listData];
-    // let foundIdx = newList.findIndex((item) => item.id === id);
-    // newList.splice(foundIdx, 1);
-    // setListData(newList);
-    // setFilerList(newList);
+  const handleDeleteTodoById = (id) => {
+    dispatch(todoActions.deleteTodo(id));
+
+    // await axios.delete(baseURL + `/todos/${id}`).then((res) => {
+    //   axios.get(baseURL + "/todos").then((res) => {
+    //   });
+    // });
   };
 
   const handleCheckBoxClick = (id) => {
@@ -146,18 +137,7 @@ function App() {
     setFilerList(newList);
 
     if (!newList[foundIdx].isEdit) {
-      axios
-        .put(baseURL + `/todos/${id}`, {
-          ...todo,
-          isEdit: false,
-          isDone: false,
-        })
-        .then((res) => {
-          axios.get(baseURL + "/todos").then((res) => {
-            setListData(res.data);
-            setFilerList(res.data);
-          });
-        });
+      dispatch(todoActions.editTodo(id, todo));
     }
   };
 
@@ -282,23 +262,31 @@ function App() {
             className="btnList"
             value={"Todo"}
           ></Button>
-          {showSave ? (
+          {/* {showSave ? (
             <Button
               handleOnClick={handleShowButtonSave}
               className="btnList "
               value={"Save"}
             ></Button>
-          ) : null}
+          ) : null} */}
         </div>
         <TodoList
           filterList={filterList}
           handleDeleteTodoById={handleDeleteTodoById}
           handleCheckBoxClick={handleCheckBoxClick}
-          handleSwitchEdit={handleSwitchEdit}
+          // handleSwitchEdit={handleSwitchEdit}
           handleOnChangeEdit={handleOnChangeEdit}
           // handleKeyPress={handleKeyPress}
-          handleShowButtonSave={handleShowButtonSave}
+          // handleShowButtonSave={handleShowButtonSave}
+          handlePopupClick={setOpenPopup}
         ></TodoList>
+
+        <Popup
+          trigger={openPopup}
+          handleSwitchEdit={handleSwitchEdit}
+          setTrigger={setOpenPopup}
+        ></Popup>
+
         <div className=" btnDelete ">
           <div>
             <Button
@@ -317,4 +305,3 @@ function App() {
     </>
   );
 }
-export default App;
