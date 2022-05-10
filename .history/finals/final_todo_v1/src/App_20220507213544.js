@@ -105,13 +105,14 @@ export default function App() {
     console.log("e là gì :" + e.target);
   };
 
-  const handleOnChangeEdit = (e, todo) => {
-    let newList = [...filterList];
-    let foundIdx = newList.findIndex((item) => item.id === todo.id);
-    newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
-    setFilterList(newList);
-    console.log(filterList[foundIdx]);
-  };
+  // const handleOnChangeEdit = (e, todo) => {
+  //   let newList = [...filterList];
+  //   let foundIdx = newList.findIndex((item) => item.id === todo.id);
+  //   newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
+  //   setFilterList(newList);
+
+  //   // console.log(filterList[foundIdx]);
+  // };
 
   const handleKeyPress = (e, id) => {
     if (e.key === "Enter") {

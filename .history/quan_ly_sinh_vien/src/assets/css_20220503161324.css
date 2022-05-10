@@ -1,0 +1,21 @@
+img {
+  width: 70px;
+  height: 70px;
+}
+.table {
+  width: 700px;
+}
+button {
+  border: none;
+  outline: none;
+}
+.form-info {
+  display: block;
+}
+.form-info input {
+  width: 100%;
+  margin-bottom: 10px;
+  outline: none;
+  border: none;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

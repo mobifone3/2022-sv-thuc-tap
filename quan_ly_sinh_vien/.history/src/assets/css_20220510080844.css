@@ -1,0 +1,38 @@
+img {
+  width: 70px;
+  height: 70px;
+}
+.table {
+  width: 700px;
+}
+.main {
+  width: 80%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+  margin: 0 auto;
+  display: block;
+  padding: 10px 15px;
+  margin-top: 20px;
+}
+.main-title {
+  text-align: center;
+}
+button {
+  border: none;
+  outline: none;
+}
+.form-info {
+  display: block;
+}
+.form-info input {
+  width: 100%;
+  margin-bottom: 10px;
+  outline: none;
+  border: 1px solid #eee;
+  height: 50px;
+  border-radius: 20px;
+  padding: 0 10px;
+}
+.form-info input::placeholder {
+  color: red;
+}

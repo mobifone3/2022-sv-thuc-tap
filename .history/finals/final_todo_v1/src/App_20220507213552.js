@@ -106,11 +106,11 @@ export default function App() {
   };
 
   const handleOnChangeEdit = (e, todo) => {
-    let newList = [...filterList];
-    let foundIdx = newList.findIndex((item) => item.id === todo.id);
-    newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
-    setFilterList(newList);
-    console.log(filterList[foundIdx]);
+    // let newList = [...filterList];
+    // let foundIdx = newList.findIndex((item) => item.id === todo.id);
+    // newList.splice(foundIdx, 1, { ...todo, [e.target.name]: e.target.value });
+    // setFilterList(newList);
+    // console.log(filterList[foundIdx]);
   };
 
   const handleKeyPress = (e, id) => {

@@ -1,0 +1,25 @@
+import { actions } from "./actions";
+const initialState = {
+  data: [],
+  loading: false,
+  err: "",
+};
+export function reducer(state = initialState, action) {
+  switch (action.type) {
+    case actions.GET_ALL_SINHVIEN_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actions.GET_ALL_SINHVIEN_SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        err: "",
+      };
+
+    default:
+      return state;
+  }
+}

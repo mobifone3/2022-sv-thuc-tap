@@ -1,0 +1,17 @@
+img {
+  width: 70px;
+  height: 70px;
+}
+.table {
+  width: 700px;
+}
+button {
+  border: none;
+  outline: none;
+}
+.form-info {
+  display: block;
+}
+.form-info input {
+  width: 100%;
+}
