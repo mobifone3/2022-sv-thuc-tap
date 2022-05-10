@@ -6,10 +6,18 @@ export const actions = {
   GET_ALL_SINHVIEN_SUCCESS: "GET_ALL_SINHVIEN_SUCCESS",
   GET_ALL_SINHVIEN_FAIL: "GET_ALL_SINHVIEN_FAIL",
   SHOW_MODAL_TYPE: "SHOW_MODAL_TYPE",
-  showModalType: (type) => {
+  OPEN_MODAL: "OPEN_MODAL",
+  CLOSE_MODAL: "CLOSE_MODAL",
+
+  openModal: (mode, data) => {
     return {
-      type: actions.SHOW_MODAL_TYPE,
-      payload: type,
+      type: actions.OPEN_MODAL,
+      payload: { mode, data },
+    };
+  },
+  closeModal: () => {
+    return {
+      type: actions.CLOSE_MODAL,
     };
   },
   getAllSinhvienStart: () => {

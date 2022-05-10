@@ -1,6 +1,7 @@
 import { actions } from "./actions";
 const initialState = {
   data: [],
+  modal: { isShow: false },
   loading: false,
   err: "",
   type: "",
@@ -26,11 +27,19 @@ export function reducer(state = initialState, action) {
         loading: false,
         err: "",
       };
-    case actions.SHOW_MODAL_TYPE:
+    case actions.OPEN_MODAL:
       return {
         ...state,
-        type: action.payload,
-        loading: false,
+        modal: {
+          isShow: true,
+          mode: actions.payload.mode,
+          data: action.payload.data,
+        },
+      };
+    case actions.CLOSE_MODAL:
+      return {
+        ...state,
+        modal: { isShow: false },
       };
 
     default:

@@ -11,7 +11,7 @@ function App() {
   const [data, setdata] = useState();
   // kiểm tra xem dữ liệu ban đầu có chưa, nếu chưa có thì mới gán
   useEffect(() => {
-    if ((sinhvien?.[0] && !sinhvien?.[0]) || !data?.[0]) {
+    if (!sinhvien || !data) {
       dispatch(actions.getAllData());
       setdata(sinhvien);
     }

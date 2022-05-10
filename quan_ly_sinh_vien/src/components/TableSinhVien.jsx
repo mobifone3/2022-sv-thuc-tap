@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Table, Space } from "antd";
 import Button from "./Button";
@@ -8,7 +7,6 @@ import { actions } from "../redux/actions";
 import Swal from "sweetalert2";
 export default function TableSinhVien(resource) {
   const dispatch = useDispatch();
-  const [data, setData] = useState();
   const columns = [
     {
       title: "STT",
@@ -44,7 +42,7 @@ export default function TableSinhVien(resource) {
 
       render: (text, record, index) => (
         <Space size="middle">
-          <Button className={`btn-primary bg-primary`} handleClick={() => onInChange(record)}>
+          <Button className={`btn-primary bg-primary`} handleClick={() => showModal("Edit", record)}>
             sửa
           </Button>
           <Button className={`btn-danger bg-danger`} handleClick={() => handleDelete(record.id)}>
@@ -54,7 +52,6 @@ export default function TableSinhVien(resource) {
       ),
     },
   ];
-
   const handleDelete = (index) => {
     Swal.fire({
       title: "Bạn có muốn xóa?",
@@ -71,23 +68,18 @@ export default function TableSinhVien(resource) {
     });
   };
 
-  const onInChange = useCallback((record) => {
-    dispatch(actions.showModalType("edit"));
-    setData(record);
-    console.log("record ->>", record);
-  }, []);
-  const showModal = () => {
-    dispatch(actions.showModalType("add"));
+  const showModal = (mode, data) => {
+    dispatch(actions.openModal(mode, data));
   };
   return (
     <>
       {/* <Button>Thêm</Button>
        */}
-      <Button className="btn btn-primary" type="primary" handleClick={showModal}>
+      <Button className="btn btn-primary" type="primary" handleClick={() => showModal("Add")}>
         Thêm sinh viên
       </Button>
-      <Modals data={data} name="Thêm sinh viên"></Modals>
-      <Table columns={columns} dataSource={resource.resource} />
+      <Modals name="Thêm sinh viên"></Modals>
+      <Table rowKey={(record) => record.id} columns={columns} dataSource={resource.resource} />
     </>
   );
 }
