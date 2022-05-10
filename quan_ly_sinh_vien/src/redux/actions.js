@@ -5,13 +5,23 @@ export const actions = {
   GET_ALL_SINHVIEN_START: " GET_ALL_SINHVIEN_START",
   GET_ALL_SINHVIEN_SUCCESS: "GET_ALL_SINHVIEN_SUCCESS",
   GET_ALL_SINHVIEN_FAIL: "GET_ALL_SINHVIEN_FAIL",
-  SHOW_MODAL_TYPE: "SHOW_MODAL_TYPE",
-  showModalType: (type) => {
+  OPEN_MODAL: "OPEN_MODAL",
+  CLOSE_MODAL: "CLOSE_MODAL",
+
+  openModal: (mode, data) => {
     return {
-      type: actions.SHOW_MODAL_TYPE,
-      payload: type,
+      type: actions.OPEN_MODAL,
+      payload: { mode, data },
     };
   },
+
+  closeModal: (mode, data) => {
+    return {
+      type: actions.CLOSE_MODAL,
+      payload: { mode, data },
+    };
+  },
+
   getAllSinhvienStart: () => {
     return { type: actions.GET_ALL_SINHVIEN_START };
   },
@@ -36,10 +46,10 @@ export const actions = {
           if (res.code === 200 || res.data) {
             return dispatch(actions.getAllSinhvienSuccess(res.data));
           }
-          return dispatch(actions.GET_ALL_SINHVIEN_FAIL(res));
+          return dispatch(actions.getAllSinhvienFail(res));
         })
         .catch((err) => {
-          return dispatch(actions.GET_ALL_SINHVIEN_FAIL(err));
+          return dispatch(actions.getAllSinhvienFail(err));
         });
     };
   },

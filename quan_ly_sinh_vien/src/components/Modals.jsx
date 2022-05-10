@@ -1,43 +1,87 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "./Input";
 import UploadImage from "./UploadImage";
 import { actions } from "../redux/actions";
-const Modals = ({ data }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
+const Modals = () => {
+  const isVisible = useSelector((state) => state.sinhvien.modal.show);
+  const data = useSelector((state) => state.sinhvien.modal.data);
+  const mode = useSelector((state) => state.sinhvien.modal.mode);
+
   const dispatch = useDispatch();
-  const valueType = useSelector((state) => state.sinhvien.type);
-  const [value, setValue] = useState();
+
+  const [formData, setFormData] = useState();
+
+  // ---------------------------------------------------------------------------------
+  // I. SIDE EFFECT HANDLE
+  // ---------------------------------------------------------------------------------
+  useEffect(() => {
+    if (data && mode === "EDIT") {
+      setFormData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  // ---------------------------------------------------------------------------------
+  // II. HELPER SECTION
+  // ---------------------------------------------------------------------------------
   const handleOnChange = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  // console.log("data ->>", data.code);
+
   const handleOk = () => {
-    setIsModalVisible(false);
-    dispatch(actions.insertData(value));
-    setValue("");
+    dispatch(actions.closeModal());
+    setFormData({});
   };
+
   const handleCancel = () => {
-    setIsModalVisible(false);
+    dispatch(actions.closeModal());
+    setFormData({});
   };
+
+  // ---------------------------------------------------------------------------------
+  // III. JSX RENDER SECTION
+  // ---------------------------------------------------------------------------------
   return (
     <>
-      {valueType === "add" ? (
-        <Modal title="Thêm sinh viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      {mode === "ADD" ? (
+        <Modal title="Thêm sinh viên" visible={isVisible} onOk={handleOk} onCancel={handleCancel}>
           <div className="form-info">
-            <Input placeholder="Nhập vào mã sinh viên" value={value} name="code" type="text" onChange={handleOnChange}></Input>
-            <Input placeholder="nhập vào Tên" value={value} name="name" type="text" onChange={handleOnChange}></Input>
-            <Input placeholder="nhập vào email" value={value} name="email" type="email" onChange={handleOnChange}></Input>
+            <Input
+              placeholder="Nhập vào mã sinh viên"
+              value={formData ? formData.code : ""}
+              name="code"
+              type="text"
+              onChange={handleOnChange}
+            ></Input>
+            <Input
+              placeholder="nhập vào Tên"
+              value={formData ? formData.name : ""}
+              name="name"
+              type="text"
+              onChange={handleOnChange}
+            ></Input>
+            <Input
+              placeholder="nhập vào email"
+              value={formData ? formData.email : ""}
+              name="email"
+              type="email"
+              onChange={handleOnChange}
+            ></Input>
             <UploadImage></UploadImage>
           </div>
         </Modal>
-      ) : valueType === "edit" ? (
-        <Modal title="Thêm sinh viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      ) : mode === "EDIT" ? (
+        <Modal title="Sửa Thông Tin Sinh Viên" visible={isVisible} onOk={handleOk} onCancel={handleCancel}>
           <div className="form-info">
-            <Input placeholder="Nhập vào mã sinh viên" name="code" type="text" onChange={handleOnChange}></Input>
-            <Input placeholder="nhập vào Tên" name="name" type="text" onChange={handleOnChange}></Input>
-            <Input placeholder="nhập vào email" name="email" type="email" onChange={handleOnChange}></Input>
+            <Input value={formData ? formData.code : ""} name="code" type="text" onChange={handleOnChange}></Input>
+            <Input value={formData ? formData.name : ""} name="name" type="text" onChange={handleOnChange}></Input>
+            <Input value={formData ? formData.email : ""} name="email" type="email" onChange={handleOnChange}></Input>
             <UploadImage></UploadImage>
           </div>
         </Modal>
@@ -46,4 +90,4 @@ const Modals = ({ data }) => {
   );
 };
 
-export default memo(Modals);
+export default Modals;
