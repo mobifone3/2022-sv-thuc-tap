@@ -32,8 +32,7 @@ export function reducer(state = initialState, action) {
         ...state,
         modal: {
           isShow: true,
-          mode: actions.payload.mode,
-          data: action.payload.data,
+          ...action.payload,
         },
       };
     case actions.CLOSE_MODAL:
