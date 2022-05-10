@@ -25,7 +25,7 @@ export default function InputHolder({
             <Input
               key={idx}
               value={formData?.[config.name]}
-              name={config.name}
+              name={config.fullname}
               label={config.label}
               placeholder={config.placeholder}
               handleOnChange={handleOnChange}

@@ -1,0 +1,20 @@
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+
+img {
+  border-radius: 10px;
+}
+p {
+  margin: 0;
+}
+
+h4 {
+  margin: 2rem 0rem 1rem;
+}
+
+td,
+th {
+  vertical-align: middle;
+}
