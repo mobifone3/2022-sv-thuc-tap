@@ -26,6 +26,7 @@ const Modals = () => {
     if (mode === "Add") {
       Swal.fire({
         title: "Bạn có muốn thêm sinh viên",
+
         showCancelButton: true,
         cancelButtonText: "Hủy",
         confirmButtonText: "Xóa",
@@ -40,6 +41,7 @@ const Modals = () => {
     if (mode === "Edit") {
       Swal.fire({
         title: "Bạn có muốn sửa?",
+
         showCancelButton: true,
         cancelButtonText: "Hủy",
         confirmButtonText: "Xóa",

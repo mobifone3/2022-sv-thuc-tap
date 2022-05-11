@@ -30,21 +30,14 @@ export function reducer(state = initialState, action) {
     case actions.OPEN_MODAL:
       return {
         ...state,
-        modal: {
-          isShow: true,
-          ...action.payload,
-        },
+        modal: { isShow: true },
       };
     case actions.CLOSE_MODAL:
       return {
         ...state,
         modal: { isShow: false },
       };
-    case actions.UPDATE_DATA_MODAL:
-      return {
-        ...state,
-        data: action.payload,
-      };
+
     default:
       return state;
   }

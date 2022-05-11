@@ -32,7 +32,8 @@ export function reducer(state = initialState, action) {
         ...state,
         modal: {
           isShow: true,
-          ...action.payload,
+          mode: actions.payload.mode,
+          data: action.payload.data,
         },
       };
     case actions.CLOSE_MODAL:
@@ -40,11 +41,7 @@ export function reducer(state = initialState, action) {
         ...state,
         modal: { isShow: false },
       };
-    case actions.UPDATE_DATA_MODAL:
-      return {
-        ...state,
-        data: action.payload,
-      };
+
     default:
       return state;
   }

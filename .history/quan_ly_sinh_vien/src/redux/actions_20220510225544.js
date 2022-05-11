@@ -74,7 +74,7 @@ export const actions = {
           // }
           if (res.data || res.status === 201) {
             let data = res.data instanceof Array ? res.data : [res.data];
-            // dispatch(actions.getAllSinhvienSuccess(data));
+            dispatch(actions.getAllSinhvienSuccess(data));
             return dispatch(actions.getAllData());
           }
           return dispatch(actions.getAllSinhvienFail(res));

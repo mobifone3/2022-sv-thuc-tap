@@ -74,7 +74,7 @@ export const actions = {
           // }
           if (res.data || res.status === 201) {
             let data = res.data instanceof Array ? res.data : [res.data];
-            // dispatch(actions.getAllSinhvienSuccess(data));
+            dispatch(actions.getAllSinhvienSuccess(data));
             return dispatch(actions.getAllData());
           }
           return dispatch(actions.getAllSinhvienFail(res));
@@ -86,19 +86,14 @@ export const actions = {
   },
   updateData: (data) => {
     return (dispatch) => {
-      dispatch(actions.getAllSinhvienStart());
-      axios
-        .put(baseURL + `sinhvien/${data.id}`, data)
-        .then((res) => {
-          if (res.data && res.status === 200) {
-            return dispatch(actions.getAllData());
-            // return dispatch(actions.getAllSinhvienSuccess([res.data]));
-          }
-          return dispatch(actions.getAllSinhvienFail(res));
-        })
-        .catch((err) => dispatch(actions.getAllSinhvienFail(err)));
-    };
-  },
+      dispatch(actions.getAllSinhvienStart()),
+        axios.put(baseURL + `sinhvien/${data.id}`, {
+          data
+        }).then(res)=> {
+            console.log(res.data);
+      }
+    }
+  }
 
   deleteData: (id) => {
     return (dispatch) => {

@@ -22,36 +22,8 @@ const Modals = () => {
   }, [data, mode]);
   // console.log("data ->>", data.code);
   const handleOk = () => {
-    if (formData === "" || formData === null || formData === undefined) return Swal.fire("Xin vui lòng nhập dữ liệu");
-    if (mode === "Add") {
-      Swal.fire({
-        title: "Bạn có muốn thêm sinh viên",
-        showCancelButton: true,
-        cancelButtonText: "Hủy",
-        confirmButtonText: "Xóa",
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          dispatch(actions.insertData(formData));
-          Swal.fire("Thêm thành công!", "", "success");
-        }
-      });
-    }
-    if (mode === "Edit") {
-      Swal.fire({
-        title: "Bạn có muốn sửa?",
-        showCancelButton: true,
-        cancelButtonText: "Hủy",
-        confirmButtonText: "Xóa",
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          dispatch(actions.updateData(formData));
-          Swal.fire("Thêm thành công!", "", "success");
-        }
-      });
-    }
-    // dispatch(actions.insertData(formData));
+    if (formData === "") return Swal.fire("Xin vui lòng nhập dữ liệu");
+    dispatch(actions.insertData(formData));
     dispatch(actions.closeModal());
     setFormData("");
   };

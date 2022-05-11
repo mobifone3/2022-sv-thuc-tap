@@ -1,11 +1,9 @@
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo } from "react";
 import { Modal } from "antd";
-import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "./Input";
 import UploadImage from "./UploadImage";
 import { actions } from "../redux/actions";
-
 const Modals = () => {
   const dispatch = useDispatch();
   const isModalVisible = useSelector((state) => state.sinhvien.modal.isShow);
@@ -19,39 +17,11 @@ const Modals = () => {
     if (data && mode === "Edit") {
       setFormData(data);
     }
-  }, [data, mode]);
+  }, []);
+
   // console.log("data ->>", data.code);
   const handleOk = () => {
-    if (formData === "" || formData === null || formData === undefined) return Swal.fire("Xin vui lòng nhập dữ liệu");
-    if (mode === "Add") {
-      Swal.fire({
-        title: "Bạn có muốn thêm sinh viên",
-        showCancelButton: true,
-        cancelButtonText: "Hủy",
-        confirmButtonText: "Xóa",
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          dispatch(actions.insertData(formData));
-          Swal.fire("Thêm thành công!", "", "success");
-        }
-      });
-    }
-    if (mode === "Edit") {
-      Swal.fire({
-        title: "Bạn có muốn sửa?",
-        showCancelButton: true,
-        cancelButtonText: "Hủy",
-        confirmButtonText: "Xóa",
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          dispatch(actions.updateData(formData));
-          Swal.fire("Thêm thành công!", "", "success");
-        }
-      });
-    }
-    // dispatch(actions.insertData(formData));
+    dispatch(actions.insertData(formData));
     dispatch(actions.closeModal());
     setFormData("");
   };
@@ -70,11 +40,11 @@ const Modals = () => {
           </div>
         </Modal>
       ) : mode === "Edit" ? (
-        <Modal title="Sửa Thông Tin Sinh Viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Thêm sinh viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           <div className="form-info">
-            <Input value={formData?.code || ""} name="code" type="text" onChange={handleOnChange}></Input>
-            <Input value={formData?.name || ""} name="name" type="text" onChange={handleOnChange}></Input>
-            <Input value={formData?.email || ""} name="email" type="email" onChange={handleOnChange}></Input>
+            <Input value={data.code} name="code" type="text" onChange={handleOnChange}></Input>
+            <Input value={data.name} name="name" type="text" onChange={handleOnChange}></Input>
+            <Input value={data.email} name="email" type="email" onChange={handleOnChange}></Input>
             <UploadImage></UploadImage>
           </div>
         </Modal>

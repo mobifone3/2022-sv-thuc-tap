@@ -8,17 +8,16 @@ export const actions = {
   SHOW_MODAL_TYPE: "SHOW_MODAL_TYPE",
   OPEN_MODAL: "OPEN_MODAL",
   CLOSE_MODAL: "CLOSE_MODAL",
-  UPDATE_DATA_MODAL: "UPDATE_DATA_MODAL",
 
-  openModal: (mode, data) => {
+  openModal: (data) => {
     return {
       type: actions.OPEN_MODAL,
-      payload: { mode, data },
+      payload: data,
     };
   },
-  closeModal: () => {
+  openModal: () => {
     return {
-      type: actions.CLOSE_MODAL,
+      type: actions.OPEN_MODAL,
     };
   },
   getAllSinhvienStart: () => {
@@ -34,12 +33,6 @@ export const actions = {
     return {
       type: actions.GET_ALL_SINHVIEN_FAIL,
       payload: err,
-    };
-  },
-  updateDataModal: (data) => {
-    return {
-      type: actions.UPDATE_DATA_MODAL,
-      payload: data,
     };
   },
   getAllData: () => {
@@ -74,7 +67,7 @@ export const actions = {
           // }
           if (res.data || res.status === 201) {
             let data = res.data instanceof Array ? res.data : [res.data];
-            // dispatch(actions.getAllSinhvienSuccess(data));
+            dispatch(actions.getAllSinhvienSuccess(data));
             return dispatch(actions.getAllData());
           }
           return dispatch(actions.getAllSinhvienFail(res));
@@ -82,21 +75,6 @@ export const actions = {
         .catch((err) => {
           dispatch(actions.getAllSinhvienFail(err));
         });
-    };
-  },
-  updateData: (data) => {
-    return (dispatch) => {
-      dispatch(actions.getAllSinhvienStart());
-      axios
-        .put(baseURL + `sinhvien/${data.id}`, data)
-        .then((res) => {
-          if (res.data && res.status === 200) {
-            return dispatch(actions.getAllData());
-            // return dispatch(actions.getAllSinhvienSuccess([res.data]));
-          }
-          return dispatch(actions.getAllSinhvienFail(res));
-        })
-        .catch((err) => dispatch(actions.getAllSinhvienFail(err)));
     };
   },
 
